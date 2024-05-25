@@ -2,31 +2,81 @@ create database moseeqify
 
 use moseeqify
 
+CREATE DATABASE moseeqify;
+USE moseeqify;
+
 -- Create User table
-CREATE TABLE Users (
+CREATE TABLE [User] (
     username VARCHAR(50) PRIMARY KEY,
-    email VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(100),
     name VARCHAR(100),
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(100),
     dob DATE,
-    dateJoined DATE DEFAULT GETDATE()
+    dateJoined DATETIME
 );
 
 -- Create Artist table
-CREATE TABLE Artists (
-    artistID INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE Artist (
+    artistID INT PRIMARY KEY,
     name VARCHAR(100),
     bio TEXT,
     profilepiclink VARCHAR(255)
 );
 
+-- Create UserFollowsArtist table
+CREATE TABLE UserFollowsArtist (
+    username VARCHAR(50),
+    artistID INT,
+    PRIMARY KEY (username, artistID),
+    FOREIGN KEY (username) REFERENCES [User](username),
+    FOREIGN KEY (artistID) REFERENCES Artist(artistID)
+);
+
 -- Create Album table
-CREATE TABLE Albums (
-    albumID INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE Album (
+    albumID INT PRIMARY KEY,
     name VARCHAR(100),
-    artistID INT FOREIGN KEY REFERENCES Artists(artistID),
-    releaseDate DATE,
-    coverimagelink VARCHAR(255)
+    artistID INT,
+    releasedate DATE,
+    coverimagelink VARCHAR(255),
+    FOREIGN KEY (artistID) REFERENCES Artist(artistID)
+);
+
+-- Create AlbumSongs table
+CREATE TABLE AlbumSongs (
+    albumID INT,
+    songID INT,
+    PRIMARY KEY (albumID, songID),
+    FOREIGN KEY (albumID) REFERENCES Album(albumID),
+    FOREIGN KEY (songID) REFERENCES Song(songID)
+);
+
+-- Create Playlist table
+CREATE TABLE Playlist (
+    playlistID INT PRIMARY KEY,
+    name VARCHAR(100),
+    creationdate DATE,
+    duration TIME,
+    username VARCHAR(50),
+    FOREIGN KEY (username) REFERENCES [User](username)
+);
+
+-- Create PlaylistSongs table
+CREATE TABLE PlaylistSongs (
+    playlistID INT,
+    songID INT,
+    PRIMARY KEY (playlistID, songID),
+    FOREIGN KEY (playlistID) REFERENCES Playlist(playlistID),
+    FOREIGN KEY (songID) REFERENCES Song(songID)
+);
+
+-- Create UserListeningHistory table
+CREATE TABLE UserListeningHistory (
+    username VARCHAR(50),
+    songID INT,
+    listeningDate DATETIME,
+    FOREIGN KEY (username) REFERENCES [User](username),
+    FOREIGN KEY (songID) REFERENCES Song(songID)
 );
 
 -- Create Genre table
@@ -35,37 +85,16 @@ CREATE TABLE Genre (
 );
 
 -- Create Song table
-CREATE TABLE Songs (
-    songID INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE Song (
+    songID INT PRIMARY KEY,
     title VARCHAR(100),
-    artistID INT FOREIGN KEY REFERENCES Artists(artistID),
-    albumID INT FOREIGN KEY REFERENCES Albums(albumID),
-    genreName VARCHAR(50) FOREIGN KEY REFERENCES Genre(genreName),
-    duration INT,
+    artistID INT,
+    albumID INT,
+    genreName VARCHAR(50),
+    duration TIME,
     audiolink VARCHAR(255),
-    releaseDate DATE
-);
-
--- Create ListeningHistory table
-CREATE TABLE ListeningHistory (
-    username VARCHAR(50) FOREIGN KEY REFERENCES Users(username),
-    songID INT FOREIGN KEY REFERENCES Songs(songID),
-    timestamp DATETIME DEFAULT GETDATE(),
-    PRIMARY KEY (username, songID)
-);
-
--- Create Playlist table
-CREATE TABLE Playlist (
-    playlistID INT PRIMARY KEY IDENTITY(1,1),
-    name VARCHAR(100),
-    creationDate DATE DEFAULT GETDATE(),
-    duration INT,
-    username VARCHAR(50) FOREIGN KEY REFERENCES Users(username)
-);
-
--- Create PlaylistSongs table
-CREATE TABLE PlaylistSongs (
-    playlistID INT FOREIGN KEY REFERENCES Playlist(playlistID),
-    songID INT FOREIGN KEY REFERENCES Songs(songID),
-    PRIMARY KEY (playlistID, songID)
+    releaseDate DATE,
+    FOREIGN KEY (artistID) REFERENCES Artist(artistID),
+    FOREIGN KEY (albumID) REFERENCES Album(albumID),
+    FOREIGN KEY (genreName) REFERENCES Genre(genreName)
 );
