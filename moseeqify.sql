@@ -1,7 +1,3 @@
-create database moseeqify
-
-use moseeqify
-
 CREATE DATABASE moseeqify;
 USE moseeqify;
 
@@ -12,7 +8,8 @@ CREATE TABLE [User] (
     name VARCHAR(100),
     password VARCHAR(100),
     dob DATE,
-    dateJoined DATETIME
+    dateJoined DATETIME,
+    CONSTRAINT DF_User_dateJoined DEFAULT GETDATE() FOR dateJoined
 );
 
 -- Create Artist table
@@ -39,6 +36,7 @@ CREATE TABLE Album (
     artistID INT,
     releasedate DATE,
     coverimagelink VARCHAR(255),
+    CONSTRAINT CK_Album_Songs CHECK ((SELECT COUNT(*) FROM AlbumSongs WHERE AlbumSongs.albumID = Album.albumID) > 0),
     FOREIGN KEY (artistID) REFERENCES Artist(artistID)
 );
 
@@ -56,8 +54,8 @@ CREATE TABLE Playlist (
     playlistID INT PRIMARY KEY,
     name VARCHAR(100),
     creationdate DATE,
-    duration TIME,
     username VARCHAR(50),
+    CONSTRAINT DF_Playlist_creationdate DEFAULT GETDATE() FOR creationdate,
     FOREIGN KEY (username) REFERENCES [User](username)
 );
 
@@ -94,7 +92,17 @@ CREATE TABLE Song (
     duration TIME,
     audiolink VARCHAR(255),
     releaseDate DATE,
+    CONSTRAINT DF_Song_releaseDate DEFAULT GETDATE() FOR releaseDate,
     FOREIGN KEY (artistID) REFERENCES Artist(artistID),
     FOREIGN KEY (albumID) REFERENCES Album(albumID),
     FOREIGN KEY (genreName) REFERENCES Genre(genreName)
+);
+
+-- Create ArtistReleasedSongs table
+CREATE TABLE ArtistReleasedSongs (
+    artistID INT,
+    songID INT,
+    PRIMARY KEY (artistID, songID),
+    FOREIGN KEY (artistID) REFERENCES Artist(artistID),
+    FOREIGN KEY (songID) REFERENCES Song(songID)
 );
