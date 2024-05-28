@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Your Playlists</h1>
+<form method="post" action="{{ url_for('manage_playlists') }}">
+    <label for="name">Playlist Name</label>
+    <input type="text" name="name" required>
+    <button type="submit">Create</button>
+</form>
+<ul>
+    {% for playlist in playlists %}
+        <li>{{ playlist.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

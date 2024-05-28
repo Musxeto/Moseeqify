@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Songs</h1>
+<ul>
+    {% for song in songs %}
+        <li>{{ song.title }} <a href="{{ url_for('play_song', songID=song.songID) }}">Play</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

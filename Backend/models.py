@@ -1,5 +1,3 @@
-# models.py
-
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
@@ -12,7 +10,9 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100), nullable=False)
     dob = db.Column(db.Date, nullable=False)
     dateJoined = db.Column(db.DateTime, default=db.func.current_timestamp())
-    playlists = db.relationship('Playlist', backref='user', lazy=True)
+
+    def get_id(self):
+        return self.username
 
 class Artist(db.Model):
     artistID = db.Column(db.Integer, primary_key=True)

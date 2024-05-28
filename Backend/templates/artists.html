@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Artists</h1>
+<ul>
+    {% for artist in artists %}
+        <img src={{artist.profilePicLink}} alt="profile pic" />
+        <li>{{ artist.name }} <form method="post" action="{{ url_for('follow_artist', artistID=artist.artistID) }}"><button type="submit">Follow</button></form></li>
+    {% endfor %}
+</ul>
+{% endblock %}

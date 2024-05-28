@@ -77,8 +77,9 @@ CREATE TABLE UserListeningHistory (
 );
 
 
+
 -- Add trigger to enforce age constraint for users
-CREATE TRIGGER CheckUserAge
+Create TRIGGER CheckUserAge
 ON [User]
 AFTER INSERT, UPDATE
 AS
@@ -89,6 +90,9 @@ BEGIN
         ROLLBACK TRANSACTION
     END
 END
+
+DISABLE TRIGGER CheckUserAge ON [User];
+
 
 CREATE TRIGGER InsertIntoAlbumSongs
 ON Song

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ name }}'s Profile</h1>
+<h2>Listening History</h2>
+<ul>
+    {% for history in current_user.user_listening_history %}
+        <li>{{ history.song.title }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
