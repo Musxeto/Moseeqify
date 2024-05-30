@@ -4,8 +4,10 @@
 <h1>{{ name }}'s Profile</h1>
 <h2>Listening History</h2>
 <ul>
-    {% for history in current_user.user_listening_history %}
+    {% for history in user_listening_history %}
         <li>{{ history.song.title }}</li>
+    {% else %}
+        <li>No listening history available.</li>
     {% endfor %}
 </ul>
 {% endblock %}

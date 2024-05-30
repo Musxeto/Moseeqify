@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Playlists</h1>
+<h1>Albums</h1>
 <ul>
-    {% for playlist in playlists %}
+    {% for album in albums %}
         <li>
-            <h2>{{ playlist.name }}</h2>
+            <h2>{{ album.name }} by {{ album.artist.name }}</h2>
+            <img src="{{ album.coverimagelink }}" alt="Album cover" />
             <ul>
-                {% for song in playlist.songs %}
+                {% for song in album.songs %}
                     <li>
                         {{ song.title }}
                         <audio controls>

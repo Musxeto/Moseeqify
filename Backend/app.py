@@ -1,12 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
-from config import Config
-from models import db, User, Artist, Album, Song, Playlist, UserListeningHistory, PlaylistSongs, UserArtists, Genre
+from sqlalchemy.exc import IntegrityError
+from models import db, User, Artist, Album, Song, Playlist, UserListeningHistory, PlaylistSongs, UserFollowsArtists, Genre
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object('config.Config')
 db.init_app(app)
 
 login_manager = LoginManager()
@@ -27,7 +26,7 @@ def login():
         email = request.form['email']
         password = request.form['password']
         user = User.query.filter_by(email=email).first()
-        if user and check_password_hash(user.password, password):
+        if user and user.password == password:
             login_user(user)
             return redirect(url_for('profile'))
         else:
@@ -40,21 +39,16 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
-from sqlalchemy.exc import IntegrityError
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         name = request.form['name']
-        password = request.form['password']  # Store password as plain text
+        password = request.form['password']
         dob = request.form['dob']
 
-        # Attempt to create a new user
-        user = User(username=username, email=email, name=name, password=password, dob=dob)
+        user = User(username=username, email=email, name=name, dob=dob, password=password)
 
         try:
             db.session.add(user)
@@ -62,18 +56,21 @@ def register():
             login_user(user)
             return redirect(url_for('profile'))
         except IntegrityError:
-            # Rollback the session and display a user-friendly error message
             db.session.rollback()
             flash('Username or Email already exists. Please choose a different username.')
             return redirect(url_for('register'))
 
     return render_template('register.html')
 
-
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', name=current_user.name)
+    listening_history = UserListeningHistory.query.filter_by(username=current_user.username).all()
+    user_listening_history = []
+    for history in listening_history:
+        song = Song.query.get(history.songID)
+        user_listening_history.append({'song': song})
+    return render_template('profile.html', name=current_user.name, user_listening_history=user_listening_history)
 
 @app.route('/playlists', methods=['GET', 'POST'])
 @login_required
@@ -95,7 +92,7 @@ def show_artists():
 @app.route('/follow_artist/<int:artistID>', methods=['POST'])
 @login_required
 def follow_artist(artistID):
-    follow = UserArtists(username=current_user.username, artistID=artistID)
+    follow = UserFollowsArtists(username=current_user.username, artistID=artistID)
     db.session.add(follow)
     db.session.commit()
     return redirect(url_for('show_artists'))
@@ -118,7 +115,7 @@ def play_song(songID):
 @app.route('/admin')
 @login_required
 def admin():
-    if not current_user.is_admin:  # Assuming is_admin is a boolean field in User model
+    if not current_user.is_admin:
         flash('Unauthorized access.')
         return redirect(url_for('index'))
     return render_template('admin.html')

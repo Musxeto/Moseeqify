@@ -15,7 +15,7 @@ CREATE TABLE [User] (
 
 -- Create Artist table
 CREATE TABLE Artist (
-    artistID INT PRIMARY KEY,
+    artistID INT PRIMARY KEY IDENTITY(1,1),
     name VARCHAR(100) UNIQUE NOT NULL, -- Added UNIQUE constraint
     bio TEXT,
     profilepiclink VARCHAR(255)
@@ -28,7 +28,7 @@ CREATE TABLE Genre (
 
 -- Create Album table
 CREATE TABLE Album (
-    albumID INT PRIMARY KEY,
+    albumID INT PRIMARY KEY IDENTITY(1,1),
     name VARCHAR(100) NOT NULL,
     artistID INT NOT NULL REFERENCES Artist(artistID), -- Added NOT NULL constraint
     releasedate DATETIME,
@@ -37,7 +37,7 @@ CREATE TABLE Album (
 
 -- Create Song table
 CREATE TABLE Song (
-    songID INT PRIMARY KEY,
+    songID INT PRIMARY KEY IDENTITY(1,1),
     title VARCHAR(100) NOT NULL,
     artistID INT NOT NULL REFERENCES Artist(artistID),
     albumID INT REFERENCES Album(albumID),
@@ -49,14 +49,14 @@ CREATE TABLE Song (
 
 -- Create AlbumSongs table
 CREATE TABLE AlbumSongs (
-    albumID INT REFERENCES Album(albumID),
+    albumID INT REFERENCES Album(albumID) IDENTITY(1,1),
     songID INT REFERENCES Song(songID),
     PRIMARY KEY (albumID, songID)
 );
 
 -- Create Playlist table
 CREATE TABLE Playlist (
-    playlistID INT PRIMARY KEY,
+    playlistID INT PRIMARY KEY IDENTITY(1,1),
     name VARCHAR(100) NOT NULL, -- Added NOT NULL constraint
     creationdate DATETIME DEFAULT CURRENT_TIMESTAMP,
     username VARCHAR(50) NOT NULL REFERENCES [User](username)
@@ -74,6 +74,14 @@ CREATE TABLE UserListeningHistory (
     username VARCHAR(50) NOT NULL REFERENCES [User](username),
     songID INT NOT NULL REFERENCES Song(songID),
     listeningDate DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_follows_artists (
+    username VARCHAR(50) NOT NULL,
+    artistID INT NOT NULL,
+    PRIMARY KEY (username, artistID),
+    FOREIGN KEY (username) REFERENCES [User](username),
+    FOREIGN KEY (artistID) REFERENCES Artist(artistID)
 );
 
 
@@ -107,4 +115,6 @@ BEGIN
     FROM inserted
     WHERE inserted.albumID IS NOT NULL;
 END;
+
+select * from [user]
 

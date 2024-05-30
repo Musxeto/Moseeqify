@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Search Songs</h1>
+<form method="GET" action="{{ url_for('search_songs') }}">
+    <input type="text" name="query" placeholder="Search for songs...">
+    <input type="submit" value="Search">
+</form>
+
+{% if songs %}
+    <h2>Search Results</h2>
+    <ul>
+        {% for song in songs %}
+            <li>
+                {{ song.title }}
+                <audio controls>
+                    <source src="{{ song.audiolink }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}
