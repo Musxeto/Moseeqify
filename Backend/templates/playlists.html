@@ -1,23 +1,17 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h1>Playlists</h1>
-<ul>
-    {% for playlist in playlists %}
-        <li>
-            <h2>{{ playlist.name }}</h2>
-            <ul>
-                {% for song in playlist.songs %}
-                    <li>
-                        {{ song.title }}
-                        <audio controls>
-                            <source src="{{ song.audiolink }}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </li>
-                {% endfor %}
-            </ul>
-        </li>
-    {% endfor %}
-</ul>
-{% endblock %}
+<!-- playlists.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlists</title>
+</head>
+<body>
+    <h1>Playlists</h1>
+    <ul>
+        {% for playlist in playlists %}
+            <li><a href="{{ url_for('playlist_details', playlist_id=playlist.playlistID) }}">{{ playlist.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

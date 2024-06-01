@@ -3,8 +3,7 @@ from flask_login import UserMixin
 
 db = SQLAlchemy()
 
-
-class User(db.Model):
+class User(db.Model, UserMixin):
     username = db.Column(db.String(50), primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     name = db.Column(db.String(100), nullable=False)
@@ -27,15 +26,17 @@ class Genre(db.Model):
 class Album(db.Model):
     albumID = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    artistID = db.Column(db.Integer, db.ForeignKey('artist.artistID'), nullable=False)
     releasedate = db.Column(db.DateTime)
     coverimagelink = db.Column(db.String(255), nullable=False)
+    artistID = db.Column(db.Integer, db.ForeignKey('artist.artistID'), nullable=False)
+    artist = db.relationship('Artist', backref=db.backref('albums', lazy=True))
     songs = db.relationship('Song', backref='album', lazy=True)
 
 class Song(db.Model):
     songID = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     artistID = db.Column(db.Integer, db.ForeignKey('artist.artistID'), nullable=False)
+    artist = db.relationship('Artist', backref=db.backref('songs', lazy=True))
     albumID = db.Column(db.Integer, db.ForeignKey('album.albumID'))
     genreName = db.Column(db.String(50), db.ForeignKey('genre.genreName'))
     duration = db.Column(db.Time, nullable=False)
@@ -47,20 +48,25 @@ class Playlist(db.Model):
     name = db.Column(db.String(100), nullable=False)
     creationdate = db.Column(db.DateTime, default=db.func.current_timestamp())
     username = db.Column(db.String(50), db.ForeignKey('user.username'), nullable=False)
-    songs = db.relationship('Song', secondary='PlaylistSongs', lazy='subquery', backref=db.backref('playlists', lazy=True))
+    songs = db.relationship('Song', secondary='PlaylistSongs', backref=db.backref('playlists', lazy=True))
 
 class PlaylistSongs(db.Model):
     __tablename__ = 'PlaylistSongs'
     playlistID = db.Column(db.Integer, db.ForeignKey('playlist.playlistID'), primary_key=True)
-    songID = db.Column(db.Integer, db.ForeignKey('song.songID'), primary key=True)
+    songID = db.Column(db.Integer, db.ForeignKey('song.songID'), primary_key=True)
+
+class AlbumSongs(db.Model):
+    __tablename__ = 'AlbumSongs'
+    albumID = db.Column(db.Integer, db.ForeignKey('album.albumID'), primary_key=True)
+    songID = db.Column(db.Integer, db.ForeignKey('song.songID'), primary_key=True)
 
 class UserListeningHistory(db.Model):
     __tablename__ = 'UserListeningHistory'
-    username = db.Column(db.String(50), db.ForeignKey('user.username'), nullable=False, primary key=True)
-    songID = db.Column(db.Integer, db.ForeignKey('song.songID'), nullable=False, primary key=True)
-    listeningDate = db.Column(db.DateTime, default=db.func.current_timestamp(), primary key=True)
+    username = db.Column(db.String(50), db.ForeignKey('user.username'), nullable=False, primary_key=True)
+    songID = db.Column(db.Integer, db.ForeignKey('song.songID'), nullable=False, primary_key=True)
+    listeningDate = db.Column(db.DateTime, default=db.func.current_timestamp(), primary_key=True)
 
 class UserFollowsArtists(db.Model):
     __tablename__ = 'user_follows_artists'
-    username = db.Column(db.String(50), db.ForeignKey('user.username'), primary key=True)
-    artistID = db.Column(db.Integer, db.ForeignKey('artist.artistID'), primary key=True)
+    username = db.Column(db.String(50), db.ForeignKey('user.username'), primary_key=True)
+    artistID = db.Column(db.Integer, db.ForeignKey('artist.artistID'), primary_key=True)

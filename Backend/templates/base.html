@@ -12,7 +12,7 @@
         {% if current_user.is_authenticated %}
             <a href="{{ url_for('profile') }}">Profile</a>
             <a href="{{ url_for('manage_playlists') }}">Playlists</a>
-            <a href="{{ url_for('show_artists') }}">Artists</a>
+          <a href="{{ url_for('show_albums') }}">Albums</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         {% else %}
             <a href="{{ url_for('login') }}">Login</a>

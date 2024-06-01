@@ -13,12 +13,17 @@
         {% for song in songs %}
             <li>
                 {{ song.title }}
-                <audio controls>
-                    <source src="{{ song.audiolink }}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
+                <audio id="audio-{{ song.songID }}" src="{{ song.audiolink }}" type="audio/mpeg"></audio>
+                <button onclick="playSong({{ song.songID }})">Play</button>
             </li>
         {% endfor %}
     </ul>
 {% endif %}
 {% endblock %}
+
+<script>
+    function playSong(songID) {
+        var audio = document.getElementById('audio-' + songID);
+        audio.play();
+    }
+</script>

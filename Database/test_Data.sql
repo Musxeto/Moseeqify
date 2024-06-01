@@ -42,3 +42,28 @@ VALUES
     ('Is This Love', 4, 4, 'Reggae', '00:03:52', 'is_this_love.mp3', '1977-06-02'),
     ('No Woman, No Cry', 4, 4, 'Reggae', '00:07:07', 'no_woman_no_cry.mp3', '1977-06-02'),
     ('Buffalo Soldier', 4, 4, 'Reggae', '00:04:17', 'buffalo_soldier.mp3', '1977-06-02');
+
+
+
+
+
+
+-- Insert artists
+INSERT INTO Artist (name, bio, profilepiclink)
+VALUES 
+    ('Lil Mussi W', 'WE UP NIGGA.', 'MUSSI.jpg')
+
+INSERT INTO Genre (genreName)
+VALUES 
+    ('Rap')
+
+
+INSERT INTO Album (name, artistID, releasedate, coverimagelink)
+VALUES 
+    ('PAN DI PHUSSI', 1, '2023-04-30', 'PAN_DI_PHUSSI.jpg')
+
+
+-- Insert songs for various albums
+INSERT INTO Song (title, artistID, albumID, genreName, duration, audiolink, releaseDate)
+VALUES 
+    ('Default Mic', 1, 1, 'Rap', '00:01:29', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Mustafa%20G.M%20-%20default%20mic%20%5Bprod.%20HeyyLotus%5D%202023-04-29%2010_32.m4a?alt=media&token=1b4b8d49-56c0-4340-beae-e859f22c9e343', '2023-04-30')

@@ -1,24 +1,17 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h1>Albums</h1>
-<ul>
-    {% for album in albums %}
-        <li>
-            <h2>{{ album.name }} by {{ album.artist.name }}</h2>
-            <img src="{{ album.coverimagelink }}" alt="Album cover" />
-            <ul>
-                {% for song in album.songs %}
-                    <li>
-                        {{ song.title }}
-                        <audio controls>
-                            <source src="{{ song.audiolink }}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </li>
-                {% endfor %}
-            </ul>
-        </li>
-    {% endfor %}
-</ul>
-{% endblock %}
+<!-- albums.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albums</title>
+</head>
+<body>
+    <h1>Albums</h1>
+    <ul>
+        {% for album in albums %}
+            <li><a href="{{ url_for('album_details', album_id=album.albumID) }}">{{ album.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

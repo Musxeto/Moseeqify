@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ album.name }} - Details</title>
+</head>
+<body>
+    <h1>{{ album.name }}</h1>
+    <p>Artist: {{ album.artist.name }}</p>
+    <p>Release Date: {{ album.releasedate }}</p>
+    <img src="{{ album.coverimagelink }}" alt="{{ album.name }} cover image">
+    <h2>Songs</h2>
+    <ul>
+        {% for song in album.songs %}
+            <li>
+                <p>{{ song.title }}</p>
+                <audio id="audio-{{ song.songID }}" src="{{ song.audiolink }}" type="audio/mpeg"></audio>
+               <button onclick="playSong({{ song.songID }})">Play</button>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('show_albums') }}">Back to Albums</a>
+</body>
+</html>
+
+<script>
+    function playSong(songID) {
+        var audio = document.getElementById('audio-' + songID);
+        audio.play();
+    }
+</script>
