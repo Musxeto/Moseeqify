@@ -10,6 +10,20 @@ app.config.from_object('config.Config')
 db.init_app(app)
 
 
+# Error Handling Middleware
+@app.errorhandler(400)
+def bad_request(error):
+    return jsonify({"error": "Bad request"}), 400
+
+@app.errorhandler(401)
+def unauthorized(error):
+    return jsonify({"error": "Unauthorized"}), 401
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Not found"}), 404
+
+# Login Required Decorator
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -69,6 +83,8 @@ def play_song(song_id):
     db.session.add(listening_history)
     db.session.commit()
     return jsonify({"audio_link": song.audiolink}), 200
+
+# Play Song from Playlist
 @app.route('/playlists/<int:playlist_id>/play-song/<int:song_id>', methods=['GET'])
 @login_required
 def play_song_from_playlist(playlist_id, song_id):
@@ -95,6 +111,7 @@ def play_song_from_album(album_id, song_id):
         db.session.commit()
         return jsonify({"audio_link": song.audiolink}), 200
     return jsonify({"message": "Song not found in album"}), 404
+
 # Manage Playlists
 # Create Playlist
 @app.route('/playlists', methods=['POST'])
@@ -172,6 +189,7 @@ def search_songs():
         return jsonify({"message": "Missing query"}), 400
     songs = Song.query.filter(Song.title.ilike(f'%{query}%')).all()
     return jsonify([{"title": song.title, "audio_link": song.audiolink} for song in songs]), 200
+
 @app.route('/search-and-play', methods=['POST'])
 def search_and_play_songs():
     data = request.get_json()
@@ -220,7 +238,7 @@ def add_artist():
     bio = data.get('bio')
     if not name:
         return jsonify({"message": "Missing name"}), 400
-    artist = Artist(name=name,bio=bio)
+    artist = Artist(name=name, bio=bio)
     db.session.add(artist)
     db.session.commit()
     return jsonify({"message": "Artist added successfully"}), 201
@@ -258,7 +276,6 @@ def add_song():
     db.session.add(song)
     db.session.commit()
     return jsonify({"message": "Song added successfully"}), 201
-
 
 if __name__ == '__main__':
     app.run(debug=True)
