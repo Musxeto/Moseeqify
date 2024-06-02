@@ -1,14 +1,18 @@
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS, cross_origin
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-from models import db, User, Artist, Album, Song, Playlist, UserListeningHistory, UserFollowsArtists, PlaylistSongs
 from functools import wraps
-from datetime import datetime
-
+from models import User, UserListeningHistory, UserFollowsArtists, Artist, Album, AlbumSongs, PlaylistSongs, Playlist, Song
+from models import db
 app = Flask(__name__)
 app.config.from_object('config.Config')
-db.init_app(app)
 
+db.init_app(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 # Error Handling Middleware
 @app.errorhandler(400)
@@ -22,6 +26,7 @@ def unauthorized(error):
 @app.errorhandler(404)
 def not_found(error):
     return jsonify({"error": "Not found"}), 404
+
 
 # Login Required Decorator
 def login_required(f):
@@ -52,8 +57,10 @@ def register():
         db.session.rollback()
         return jsonify({"message": "Username or Email already exists"}), 409
 
-# User Login
+
+# Login
 @app.route('/login', methods=['POST'])
+@cross_origin(origin='http://localhost:5173')
 def login():
     data = request.get_json()
     email = data.get('email')
@@ -65,6 +72,7 @@ def login():
         login_user(user)
         return jsonify({"message": "Logged in successfully"}), 200
     return jsonify({"message": "Invalid email or password"}), 401
+
 
 # User Logout
 @app.route('/logout', methods=['GET'])
