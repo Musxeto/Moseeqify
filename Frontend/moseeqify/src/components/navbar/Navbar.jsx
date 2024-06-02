@@ -13,7 +13,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-black text-white p-4 flex justify-between items-center">
+    <nav className="bg-black text-white p-4 flex justify-between items-center border-b-2 border-red-500">
       <Link to="/" className="flex items-center text-xl font-bold">
         <img src="/logo.png" alt="Moseeqify" className="h-16 mr-2" />{" "}
       </Link>
