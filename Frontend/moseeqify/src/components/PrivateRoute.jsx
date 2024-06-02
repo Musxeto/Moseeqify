@@ -1,12 +1,11 @@
-// PrivateRoute.js
 import React from "react";
 import { Navigate, Route } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 
 const PrivateRoute = ({ children }) => {
-  const { currentUser } = useUser();
+  const { user } = useUser();
 
-  if (currentUser) {
+  if (user) {
     return children;
   } else {
     return <Navigate to={"/login"} />;

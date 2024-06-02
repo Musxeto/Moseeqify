@@ -2,10 +2,11 @@ import React from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { setUser } = useUser();
   const [formData, setFormData] = React.useState({
     email: "",
@@ -25,9 +26,11 @@ const Login = () => {
       );
       if (response.data.user) {
         setUser(response.data.user);
-        toast.success("Logged in successfully!");
+        await toast.success("Logged in successfully!");
+        navigate("/");
       } else {
-        toast.success("Logged in successfully!");
+        await toast.success("Logged in successfully!");
+        navigate("/");
       }
     } catch (error) {
       console.error(error);
