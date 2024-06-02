@@ -1,9 +1,10 @@
 // PrivateRoute.js
 import React from "react";
 import { Navigate, Route } from "react-router-dom";
+import { useUser } from "../contexts/UserContext";
 
 const PrivateRoute = ({ children }) => {
-  const currentUser = 10;
+  const { currentUser } = useUser();
 
   if (currentUser) {
     return children;

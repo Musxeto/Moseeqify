@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
+  const { setUser } = useUser();
+  const [formData, setFormData] = React.useState({
     email: "",
     password: "",
   });
@@ -21,20 +23,15 @@ const Login = () => {
         "http://localhost:5000/login",
         formData
       );
-      if (response.data.message) {
-        // Check if response has a message property
-        toast.success(response.data.message);
+      if (response.data.user) {
+        setUser(response.data.user);
+        toast.success("Logged in successfully!");
       } else {
-        toast.success("Logged in successfully!"); // Default success message
+        toast.success("Logged in successfully!");
       }
     } catch (error) {
-      if (error.response) {
-        // Access error message from response if available
-        toast.error("Login error: " + error.response.data.message);
-      } else {
-        // Handle other errors
-        toast.error("An error occurred during login.");
-      }
+      console.error(error);
+      toast.error("An error occurred during login.");
     }
   };
 

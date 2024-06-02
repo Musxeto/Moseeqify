@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -52,15 +52,13 @@ def register():
         user = User(username=username, email=email, name=name, password=password, dob=dob)
         db.session.add(user)
         db.session.commit()
-        return jsonify({"message": "User registered successfully"}), 201
+        return jsonify({"user": user.serialize(), "message": "User registered successfully"}), 201
     except IntegrityError:
         db.session.rollback()
         return jsonify({"message": "Username or Email already exists"}), 409
 
-
 # Login
 @app.route('/login', methods=['POST'])
-@cross_origin(origin='http://localhost:5173')
 def login():
     data = request.get_json()
     email = data.get('email')
@@ -69,8 +67,8 @@ def login():
         return jsonify({"message": "Missing fields"}), 400
     user = User.query.filter_by(email=email).first()
     if user and user.password == password:
-        login_user(user)
-        return jsonify({"message": "Logged in successfully"}), 200
+        session['user'] = user.serialize()
+        return jsonify({"user": user.serialize(), "message": "Logged in successfully"}), 200
     return jsonify({"message": "Invalid email or password"}), 401
 
 

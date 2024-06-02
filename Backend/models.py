@@ -11,6 +11,13 @@ class User(db.Model, UserMixin):
     dob = db.Column(db.Date, nullable=False)
     dateJoined = db.Column(db.DateTime, default=db.func.current_timestamp())
 
+    def serialize(self):
+        return {
+            'username': self.username,
+            'email': self.email,
+            'name': self.name,
+            'dob': self.dob,
+        }
     def get_id(self):
         return self.username
 
