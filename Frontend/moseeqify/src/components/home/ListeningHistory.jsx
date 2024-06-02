@@ -28,7 +28,7 @@ const ListeningHistory = () => {
   }, [user]);
 
   return (
-    <div className="fixed top-24 right-0 min-h-full border-2 border-red-500  bg-red-400 text-white p-8 shadow-lg">
+    <div className=" border-2 border-red-500 bg-red-400 text-white p-8 shadow-lg overflow-y-auto">
       <div>
         <h2 className="text-xl font-bold mb-4">Listening History</h2>
         {history.length > 0 ? (

@@ -17,7 +17,9 @@ const Navbar = () => {
       <Link to="/" className="flex items-center text-xl font-bold">
         <img src="/logo.png" alt="Moseeqify" className="h-16 mr-2" />{" "}
       </Link>
-      <div className="flex space-x-10 text-xl">
+      <div className="hidden md:flex space-x-10 text-xl">
+        {" "}
+        {/* Hide on small screens */}
         <Link to="/" className="hover:text-gray-400">
           Home
         </Link>
