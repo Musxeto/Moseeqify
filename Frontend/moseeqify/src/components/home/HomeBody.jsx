@@ -15,12 +15,6 @@ const HomeBody = () => {
           <ListeningHistory />
         </div>
       </div>
-
-      <MusicPlayer
-        url={
-          "https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Mustafa%20G.M%20-%20default%20mic%20%5Bprod.%20HeyyLotus%5D%202023-04-29%2010_32.m4a?alt=media&token=1b4b8d49-56c0-4340-beae-e859f22c9e34"
-        }
-      />
     </div>
   );
 };

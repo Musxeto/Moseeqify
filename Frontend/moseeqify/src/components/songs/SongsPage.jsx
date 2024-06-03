@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../navbar/Navbar";
-
+import Song from "../Song";
+import MusicPlayer from "../musicPlayer/MusicPlayer";
 const SongsPage = () => {
   const [songs, setSongs] = useState([]);
 
@@ -18,18 +19,27 @@ const SongsPage = () => {
     fetchSongs();
   }, []);
 
+  const handlePlay = () => {
+    console.log("Play button clicked");
+    setCurrentSongUrl(url);
+  };
+
   return (
     <>
       <Navbar />
       <div className="container mx-auto bg-black flex flex-col mt-16">
         <h1 className="text-3xl font-bold text-white mb-4">Songs</h1>
-        <ul className="text-white">
+        <div className="flex flex-col space-y-2">
           {songs.map((song) => (
-            <li key={song.id}>
-              {song.title} - {song.artist}
-            </li>
+            <Song
+              key={song.id}
+              title={song.title}
+              artist={song.artist}
+              url={song.url}
+              onPlay={() => handlePlay(song.title)}
+            />
           ))}
-        </ul>
+        </div>
       </div>
     </>
   );
