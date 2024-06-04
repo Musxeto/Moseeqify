@@ -27,6 +27,7 @@ class Artist(db.Model):
     bio = db.Column(db.Text)
     profilepiclink = db.Column(db.String(255))
 
+
 class Genre(db.Model):
     genreName = db.Column(db.String(50), primary_key=True)
 
@@ -49,7 +50,14 @@ class Song(db.Model):
     duration = db.Column(db.Time, nullable=False)
     audiolink = db.Column(db.String(255), nullable=False)
     releaseDate = db.Column(db.DateTime, default=db.func.current_timestamp())
-
+    def serialize(self):
+        return {
+            'id': self.songID,
+            'title': self.title,
+            'artist': self.artist.name,
+            'url': self.audiolink,
+            'album': self.album.name
+        }
 class Playlist(db.Model):
     playlistID = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -65,13 +73,16 @@ class PlaylistSongs(db.Model):
 class AlbumSongs(db.Model):
     __tablename__ = 'AlbumSongs'
     albumID = db.Column(db.Integer, db.ForeignKey('album.albumID'), primary_key=True)
-    songID = db.Column(db.Integer, db.ForeignKey('song.songID'), primary_key=True)
+    songID = db.Column(db.Integer, db.ForeignKey('Song.songID'), primary_key=True)
 
 class UserListeningHistory(db.Model):
     __tablename__ = 'UserListeningHistory'
     username = db.Column(db.String(50), db.ForeignKey('user.username'), nullable=False, primary_key=True)
     songID = db.Column(db.Integer, db.ForeignKey('song.songID'), nullable=False, primary_key=True)
     listeningDate = db.Column(db.DateTime, default=db.func.current_timestamp(), primary_key=True)
+
+    # Define relationship to Song model
+    song = db.relationship('Song', backref='listening_history')
 
 class UserFollowsArtists(db.Model):
     __tablename__ = 'user_follows_artists'

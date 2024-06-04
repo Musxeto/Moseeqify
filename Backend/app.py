@@ -104,19 +104,49 @@ def play_song_from_playlist(playlist_id, song_id):
         return jsonify({"audio_link": song.audiolink}), 200
     return jsonify({"message": "Song not found in playlist"}), 404
 
-# Play Song from Album
-@app.route('/albums/<int:album_id>/play-song/<int:song_id>', methods=['GET'])
-@login_required
-def play_song_from_album(album_id, song_id):
+# Get Specific Album
+@app.route('/albums/<int:album_id>/', methods=['GET'])
+def get_specific_album(album_id):
     album = Album.query.get_or_404(album_id)
-    song = Song.query.get_or_404(song_id)
-    if album == song.album:
-        # Save listening history
-        listening_history = UserListeningHistory(username=current_user.username, songID=song.songID)
-        db.session.add(listening_history)
-        db.session.commit()
-        return jsonify({"audio_link": song.audiolink}), 200
+
+    if album:
+        album_data = {
+            "id": album.albumID,
+            "name": album.name,
+            "release_date": album.releasedate,
+            "cover_image_link": album.coverimagelink,
+            "artist": album.artist.name,
+            "songs": [song.serialize() for song in album.songs]  # Serialize each song
+        }
+        return jsonify(album_data), 200
     return jsonify({"message": "Song not found in album"}), 404
+
+# Get All Songs
+@app.route('/songs', methods=['GET'])
+def get_all_songs():
+    songs = Song.query.all()
+    songs_data = [{
+        "id": song.songID,
+        "title": song.title,
+        "artist": song.artist.name,
+        "url": song.audiolink,
+        "album": song.album.name
+    } for song in songs]
+    return jsonify(songs_data), 200
+
+# Get All Albums
+@app.route('/albums', methods=['GET'])
+def get_all_albums():
+    albums = Album.query.all()
+    albums_data = [{
+        "id": album.albumID,
+        "name": album.name,
+        "release_date": album.releasedate,
+        "cover_image_link": album.coverimagelink,
+        "artist": album.artist.name,
+        "songs": [song.serialize() for song in album.songs]  # Serialize each song
+    } for album in albums]
+    return jsonify(albums_data), 200
 
 # Manage Playlists
 # Create Playlist
@@ -194,7 +224,8 @@ def search_songs():
     if not query:
         return jsonify({"message": "Missing query"}), 400
     songs = Song.query.filter(Song.title.ilike(f'%{query}%')).all()
-    return jsonify([{"title": song.title, "audio_link": song.audiolink} for song in songs]), 200
+    return jsonify([{"id": song.songID, "title": song.title, "artist": song.artist.name, "audio_link": song.audiolink} for song in songs]), 200
+
 
 @app.route('/search-and-play', methods=['POST'])
 def search_and_play_songs():
@@ -282,6 +313,23 @@ def add_song():
     db.session.add(song)
     db.session.commit()
     return jsonify({"message": "Song added successfully"}), 201
+
+# Fetch user listening history
+@app.route('/users/<username>/listening-history', methods=['GET'])
+def get_listening_history(username):
+    print("Fetching listening history for user:", username)  # Add logging
+    listening_history = UserListeningHistory.query.filter_by(username=username).all()
+    history_data = [{
+        "id": item.songID,
+        "title": item.song.title,
+        "artist": item.song.artist.name
+    } for item in listening_history]
+    print("Listening history data:", history_data)  # Add logging
+    return jsonify(history_data), 200
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 if __name__ == '__main__':
     app.run(debug=True)
