@@ -9,6 +9,7 @@ export const MusicProvider = ({ children }) => {
 
   const handleSetCurrentSongUrl = (url) => {
     console.log("Setting current song URL:", url);
+
     setCurrentSongUrl(url);
   };
 

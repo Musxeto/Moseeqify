@@ -14,14 +14,19 @@ import "./App.css";
 import "./CustomAudioPlayer.scss";
 import SongsPage from "./components/songs/SongsPage";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
+import AlbumsPage from "./components/albums/AlbumsPage";
+import SingleAlbum from "./components/albums/SingleAlbum";
+import Navbar from "./components/navbar/Navbar";
+import PlaylistsPage from "./components/playlists/PlaylistsPage"; // Import PlaylistsPage
 
 const App = () => {
   let location = useLocation();
 
-  // You can use the location object here to conditionally render components based on the current path
-
   return (
     <UserProvider>
+      {location.pathname !== "/register" && location.pathname !== "/login" && (
+        <Navbar />
+      )}
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -41,14 +46,34 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/albums"
+          element={
+            <PrivateRoute>
+              <AlbumsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/albums/:albumId"
+          element={
+            <PrivateRoute>
+              <SingleAlbum />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/playlists"
+          element={
+            <PrivateRoute>
+              <PlaylistsPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
 
       {location.pathname !== "/register" && location.pathname !== "/login" && (
-        <MusicPlayer
-          url={
-            "https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Punk%20Monk.mp3?alt=media&token=6f8c6a54-70d0-45fb-8083-58b909e5c444"
-          }
-        />
+        <MusicPlayer />
       )}
     </UserProvider>
   );

@@ -9,6 +9,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setUser(null);
+    setCurrentSongUrl(null);
     navigate("/login");
   };
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
+import Song from "../Song";
 
 const Search = () => {
   const [query, setQuery] = useState("");
@@ -54,7 +55,11 @@ const Search = () => {
         <div className="absolute bg-black text-white mt-2 w-full rounded-lg shadow-lg">
           {results.map((song) => (
             <div key={song.id} className="p-2 border-b border-gray-600">
-              {song.title}
+              <Song
+                url={song.audio_link}
+                artist={song.artist}
+                title={song.title}
+              />
             </div>
           ))}
         </div>

@@ -26,7 +26,6 @@ const SongsPage = () => {
 
   return (
     <>
-      <Navbar />
       <div className="container mx-auto bg-black flex flex-col mt-16">
         <h1 className="text-3xl font-bold text-white mb-4">Songs</h1>
         <div className="flex flex-col space-y-2">
