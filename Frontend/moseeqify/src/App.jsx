@@ -17,7 +17,8 @@ import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import AlbumsPage from "./components/albums/AlbumsPage";
 import SingleAlbum from "./components/albums/SingleAlbum";
 import Navbar from "./components/navbar/Navbar";
-import PlaylistsPage from "./components/playlists/PlaylistsPage"; // Import PlaylistsPage
+import PlaylistsPage from "./components/playlists/PlaylistsPage";
+import SinglePlaylist from "./components/playlists/SinglePlaylist";
 
 const App = () => {
   let location = useLocation();
@@ -28,6 +29,7 @@ const App = () => {
         <Navbar />
       )}
       <Routes>
+        {/* Routes for Register, Login, and PrivateRoute components */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route
@@ -67,6 +69,15 @@ const App = () => {
           element={
             <PrivateRoute>
               <PlaylistsPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/playlists/:playlistId"
+          element={
+            <PrivateRoute>
+              <SinglePlaylist />
             </PrivateRoute>
           }
         />

@@ -19,11 +19,6 @@ const SongsPage = () => {
     fetchSongs();
   }, []);
 
-  const handlePlay = () => {
-    console.log("Play button clicked");
-    setCurrentSongUrl(url);
-  };
-
   return (
     <>
       <div className="container mx-auto bg-black flex flex-col mt-16">
@@ -35,7 +30,7 @@ const SongsPage = () => {
               title={song.title}
               artist={song.artist}
               url={song.url}
-              onPlay={() => handlePlay(song.title)}
+              songId={song.id}
             />
           ))}
         </div>

@@ -44,6 +44,7 @@ const SingleAlbum = () => {
             title={song.title}
             artist={song.artist}
             url={song.url}
+            songId={song.id}
           />
         ))}
       </div>

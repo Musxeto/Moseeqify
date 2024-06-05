@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaPlay } from "react-icons/fa";
+import axios from "axios"; // Import Axios
 import { useMusic } from "../contexts/MusicContext";
+import { useUser } from "../contexts/UserContext"; // Import useUser hook
 
-const Song = ({ title, artist, url }) => {
+const Song = ({ title, artist, url, songId }) => {
   const { setCurrentSongUrl } = useMusic();
+  const { user } = useUser(); // Access the user context
 
-  const handlePlay = () => {
-    console.log("Play button clicked");
-    setCurrentSongUrl(url);
+  const handlePlay = async () => {
+    try {
+      console.log("Play button clicked");
+      console.log("Song ID:", songId); // Add this line to check the songId
+      setCurrentSongUrl(url);
+
+      // Make a POST request to save the song to history with the username from context
+      await axios.post(`http://localhost:5000/save-to-history/${songId}`, {
+        username: user.username,
+      });
+
+      console.log("Song played successfully");
+    } catch (error) {
+      console.error("Error playing song:", error);
+    }
   };
 
   return (
