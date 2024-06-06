@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import CreatePlaylistModal from "./CreatePlaylistModal";
 
 const PlaylistsPage = () => {
   const [playlists, setPlaylists] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -18,24 +19,34 @@ const PlaylistsPage = () => {
     fetchPlaylists();
   }, []);
 
+  const handleCreatePlaylist = (newPlaylist) => {
+    setPlaylists([...playlists, newPlaylist]);
+  };
+
   return (
-    <div className="container mx-auto bg-black flex flex-col mb-24 mt-16">
-      <h1 className="text-3xl font-bold text-white mb-4">Playlists</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {playlists.map((playlist) => (
-          <div key={playlist.id}>
-            <Link to={`/playlists/${playlist.id}`}>
-              <div className="bg-gray-900 rounded-lg p-4">
-                <h2 className="text-lg font-bold text-white mb-2">
-                  {playlist.name}
-                </h2>
-                <p className="text-gray-400">{playlist.username}</p>
-              </div>
-            </Link>
-          </div>
-        ))}
+    <>
+      <div className="container mx-auto bg-black flex flex-col mt-16">
+        <h1 className="text-3xl font-bold text-white mb-4">Playlists</h1>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Create Playlist
+        </button>
+        <div className="flex flex-col space-y-2">
+          {playlists.map((playlist) => (
+            <div key={playlist.id} className="bg-gray-800 p-4 rounded-lg">
+              <h2 className="text-xl font-bold text-white">{playlist.name}</h2>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+      <CreatePlaylistModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onCreate={handleCreatePlaylist}
+      />
+    </>
   );
 };
 
