@@ -1,4 +1,4 @@
-use moseeqify;
+-- Procedure to get content of a table dynamically
 CREATE PROCEDURE get_table_content
     @TableName NVARCHAR(128)
 AS
@@ -9,51 +9,77 @@ BEGIN
 END
 GO
 
-create procedure update_in_User
-     @username VARCHAR(50)
-    ,@name VARCHAR(100),@password VARCHAR(100)
-    ,@email VARCHAR(100), @dob DATE
-    ,@dateJoined DATETIME
+-- Procedure to update user information in the User table
+CREATE PROCEDURE update_in_User
+     @username VARCHAR(50),
+     @name VARCHAR(100),
+     @password VARCHAR(100),
+     @email VARCHAR(100),
+     @dob DATE,
+     @dateJoined DATETIME
 AS
 BEGIN
-update [USER]
-set name = @name,[password]=@password,email = @email, dob=@dob,dateJoined=@dateJoined
-    where username=@username
+    -- Update user information
+    UPDATE [USER]
+    SET name = @name,
+        [password] = @password,
+        email = @email,
+        dob = @dob,
+        dateJoined = @dateJoined
+    WHERE username = @username
 END     
 GO
 
-
-create procedure update_in_Artist
-    @artistID INT, @name VARCHAR(100), @bio VARCHAR(MAX), @profilepiclink VARCHAR(255)
+-- Procedure to update artist information in the Artist table
+CREATE PROCEDURE update_in_Artist
+    @artistID INT,
+    @name VARCHAR(100),
+    @bio VARCHAR(MAX),
+    @profilepiclink VARCHAR(255)
 AS
 BEGIN
-update Artist
-set name=@name,bio = @bio, profilepiclink=@profilepiclink
-    where artistID=@artistID
+    -- Update artist information
+    UPDATE Artist
+    SET name = @name,
+        bio = @bio,
+        profilepiclink = @profilepiclink
+    WHERE artistID = @artistID
 END     
 GO
 
-
-create procedure update_in_Genre
+-- Procedure to update genre information in the Genre table
+CREATE PROCEDURE update_in_Genre
     @old varchar(50),
     @genreName VARCHAR(50)
 AS
 BEGIN
-update Genre
-set genreName=@genreName
-    where genreName=@old
+    -- Update genre information
+    UPDATE Genre
+    SET genreName = @genreName
+    WHERE genreName = @old
 END     
 GO
 
-create procedure update_in_album
-    @albumID INT, @name VARCHAR(100), @artistID INT, @releasedate DATETIME, @coverimagelink VARCHAR(255)
+-- Procedure to update album information in the Album table
+CREATE PROCEDURE update_in_album
+    @albumID INT,
+    @name VARCHAR(100),
+    @artistID INT,
+    @releasedate DATETIME,
+    @coverimagelink VARCHAR(255)
 AS
 BEGIN
-update Album
-set name=@name,artistID=@artistID,releasedate=@releasedate,coverimagelink=@coverimagelink
-    where albumID=@albumID
+    -- Update album information
+    UPDATE Album
+    SET name = @name,
+        artistID = @artistID,
+        releasedate = @releasedate,
+        coverimagelink = @coverimagelink
+    WHERE albumID = @albumID
 END     
 GO
+
+-- Procedure to update song information in the Song table
 CREATE PROCEDURE UpdateSong
     @songID INT,
     @title VARCHAR(100),
@@ -65,6 +91,7 @@ CREATE PROCEDURE UpdateSong
     @releaseDate DATETIME = NULL
 AS
 BEGIN
+    -- Update song information
     UPDATE Song
     SET title = @title,
         artistID = @artistID,
@@ -75,6 +102,8 @@ BEGIN
         releaseDate = ISNULL(@releaseDate, CURRENT_TIMESTAMP)
     WHERE songID = @songID;
 END;
+
+-- Procedure to update album-song relationship in the AlbumSongs table
 CREATE PROCEDURE UpdateAlbumSong
     @oldAlbumID INT,
     @oldSongID INT,
@@ -91,18 +120,21 @@ BEGIN
     VALUES (@newAlbumID, @newSongID);
 END;
 
+-- Procedure to update playlist information in the Playlist table
 CREATE PROCEDURE UpdatePlaylist
     @playlistID INT,
     @name VARCHAR(100),
     @username VARCHAR(50)
 AS
 BEGIN
+    -- Update playlist information
     UPDATE Playlist
     SET name = @name,
         username = @username
     WHERE playlistID = @playlistID;
 END;
 
+-- Procedure to update playlist-song relationship in the PlaylistSongs table
 CREATE PROCEDURE UpdatePlaylistSong
     @oldPlaylistID INT,
     @oldSongID INT,
@@ -119,6 +151,7 @@ BEGIN
     VALUES (@newPlaylistID, @newSongID);
 END;
 
+-- Procedure to update user listening history in the UserListeningHistory table
 CREATE PROCEDURE UpdateUserListeningHistory
     @oldUsername VARCHAR(50),
     @oldSongID INT,
@@ -136,7 +169,7 @@ BEGIN
     VALUES (@newUsername, @newSongID, CURRENT_TIMESTAMP);
 END;
 
-
+-- Procedure to update user-artist follow relationship in the user_follows_artists table
 CREATE PROCEDURE UpdateUserFollowsArtist
     @oldUsername VARCHAR(50),
     @oldArtistID INT,
@@ -152,4 +185,3 @@ BEGIN
     INSERT INTO user_follows_artists (username, artistID)
     VALUES (@newUsername, @newArtistID);
 END;
-

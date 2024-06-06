@@ -1,43 +1,61 @@
-create procedure insert_in_User
-    @username VARCHAR(50), @name VARCHAR(100)
-    ,@password VARCHAR(100)
-    ,@email VARCHAR(100)
-    , @dob DATE, @dateJoined DATETIME
+use moseeqify;
+CREATE PROCEDURE get_table_content
+    @TableName NVARCHAR(128)
 AS
 BEGIN
-    insert into [User](username,email,name,[password],dob,dateJoined)
-    values
-    (@username,@email,@name,@password,@dob,@dateJoined);
-END 
+    DECLARE @Exec_STAT NVARCHAR(MAX)
+    SET @Exec_STAT = N'SELECT * FROM ' + QUOTENAME(@TableName)
+    EXEC sp_executesql @Exec_STAT
+END
 GO
-create procedure insert_in_Artist
-    @name VARCHAR(100), @bio VARCHAR(MAX), @profilepiclink VARCHAR(255)
+
+create procedure update_in_User
+     @username VARCHAR(50)
+    ,@name VARCHAR(100),@password VARCHAR(100)
+    ,@email VARCHAR(100), @dob DATE
+    ,@dateJoined DATETIME
 AS
 BEGIN
-    insert into Artist
-    values
-    (@name,@bio,@profilepiclink);
-END 
+update [USER]
+set name = @name,[password]=@password,email = @email, dob=@dob,dateJoined=@dateJoined
+    where username=@username
+END     
 GO
-create procedure insert_in_Genre
-     @genreName VARCHAR(50)
+
+
+create procedure update_in_Artist
+    @artistID INT, @name VARCHAR(100), @bio VARCHAR(MAX), @profilepiclink VARCHAR(255)
 AS
 BEGIN
-    insert into Genre
-    values
-    (@genreName);
-END 
+update Artist
+set name=@name,bio = @bio, profilepiclink=@profilepiclink
+    where artistID=@artistID
+END     
 GO
-create procedure insert_in_album
-    @name VARCHAR(100), @artistID INT, @releasedate DATETIME, @coverimagelink VARCHAR(255)
+
+
+create procedure update_in_Genre
+    @old varchar(50),
+    @genreName VARCHAR(50)
 AS
 BEGIN
-    insert into Album
-    values
-    (@name,@artistID,@releasedate,@coverimagelink);
-END 
+update Genre
+set genreName=@genreName
+    where genreName=@old
+END     
 GO
-CREATE PROCEDURE InsertSong
+
+create procedure update_in_album
+    @albumID INT, @name VARCHAR(100), @artistID INT, @releasedate DATETIME, @coverimagelink VARCHAR(255)
+AS
+BEGIN
+update Album
+set name=@name,artistID=@artistID,releasedate=@releasedate,coverimagelink=@coverimagelink
+    where albumID=@albumID
+END     
+GO
+CREATE PROCEDURE UpdateSong
+    @songID INT,
     @title VARCHAR(100),
     @artistID INT,
     @albumID INT = NULL,
@@ -47,56 +65,91 @@ CREATE PROCEDURE InsertSong
     @releaseDate DATETIME = NULL
 AS
 BEGIN
-    SET NOCOUNT ON;
-    
-    IF @releaseDate IS NULL
-        SET @releaseDate = CURRENT_TIMESTAMP;
-
-    INSERT INTO Song (title, artistID, albumID, genreName, duration, audiolink, releaseDate)
-    VALUES (@title, @artistID, @albumID, @genreName, @duration, @audiolink, @releaseDate);
+    UPDATE Song
+    SET title = @title,
+        artistID = @artistID,
+        albumID = @albumID,
+        genreName = @genreName,
+        duration = @duration,
+        audiolink = @audiolink,
+        releaseDate = ISNULL(@releaseDate, CURRENT_TIMESTAMP)
+    WHERE songID = @songID;
 END;
-CREATE PROCEDURE InsertAlbumSong
-    @albumID INT,
-    @songID INT
+CREATE PROCEDURE UpdateAlbumSong
+    @oldAlbumID INT,
+    @oldSongID INT,
+    @newAlbumID INT,
+    @newSongID INT
 AS
 BEGIN
+    -- Delete the old record
+    DELETE FROM AlbumSongs
+    WHERE albumID = @oldAlbumID AND songID = @oldSongID;
+
+    -- Insert the new record
     INSERT INTO AlbumSongs (albumID, songID)
-    VALUES (@albumID, @songID);
+    VALUES (@newAlbumID, @newSongID);
 END;
-CREATE PROCEDURE InsertPlaylist
+
+CREATE PROCEDURE UpdatePlaylist
+    @playlistID INT,
     @name VARCHAR(100),
     @username VARCHAR(50)
 AS
 BEGIN
-    INSERT INTO Playlist (name, creationdate, username)
-    VALUES (@name, CURRENT_TIMESTAMP, @username);
+    UPDATE Playlist
+    SET name = @name,
+        username = @username
+    WHERE playlistID = @playlistID;
 END;
-CREATE PROCEDURE InsertPlaylistSong
-    @playlistID INT,
-    @songID INT
+
+CREATE PROCEDURE UpdatePlaylistSong
+    @oldPlaylistID INT,
+    @oldSongID INT,
+    @newPlaylistID INT,
+    @newSongID INT
 AS
 BEGIN
+    -- Delete the old record
+    DELETE FROM PlaylistSongs
+    WHERE playlistID = @oldPlaylistID AND songID = @oldSongID;
+
+    -- Insert the new record
     INSERT INTO PlaylistSongs (playlistID, songID)
-    VALUES (@playlistID, @songID);
+    VALUES (@newPlaylistID, @newSongID);
 END;
 
-CREATE PROCEDURE InsertUserListeningHistory
-    @username VARCHAR(50),
-    @songID INT
+CREATE PROCEDURE UpdateUserListeningHistory
+    @oldUsername VARCHAR(50),
+    @oldSongID INT,
+    @oldListeningDate DATETIME,
+    @newUsername VARCHAR(50),
+    @newSongID INT
 AS
 BEGIN
+    -- Delete the old record
+    DELETE FROM UserListeningHistory
+    WHERE username = @oldUsername AND songID = @oldSongID AND listeningDate = @oldListeningDate;
+
+    -- Insert the new record
     INSERT INTO UserListeningHistory (username, songID, listeningDate)
-    VALUES (@username, @songID, CURRENT_TIMESTAMP);
+    VALUES (@newUsername, @newSongID, CURRENT_TIMESTAMP);
 END;
 
-CREATE PROCEDURE InsertUserFollowsArtist
-    @username VARCHAR(50),
-    @artistID INT
+
+CREATE PROCEDURE UpdateUserFollowsArtist
+    @oldUsername VARCHAR(50),
+    @oldArtistID INT,
+    @newUsername VARCHAR(50),
+    @newArtistID INT
 AS
 BEGIN
+    -- Delete the old record
+    DELETE FROM user_follows_artists
+    WHERE username = @oldUsername AND artistID = @oldArtistID;
+
+    -- Insert the new record
     INSERT INTO user_follows_artists (username, artistID)
-    VALUES (@username, @artistID);
+    VALUES (@newUsername, @newArtistID);
 END;
 
-
-use moseeqify
