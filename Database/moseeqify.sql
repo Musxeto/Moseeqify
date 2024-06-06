@@ -12,7 +12,7 @@ CREATE TABLE [User] (
     dateJoined DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT CHK_User_Age CHECK (DATEDIFF(YEAR, dob, GETDATE()) >= 18)
 );
-
+select * from [User] 
 -- Create Artist table
 CREATE TABLE Artist (
     artistID INT PRIMARY KEY IDENTITY(1,1),
@@ -49,10 +49,11 @@ CREATE TABLE Song (
 
 -- Create AlbumSongs table
 CREATE TABLE AlbumSongs (
-    albumID INT REFERENCES Album(albumID) IDENTITY(1,1),
+    albumID INT REFERENCES Album(albumID) ,
     songID INT REFERENCES Song(songID),
     PRIMARY KEY (albumID, songID)
 );
+drop TABLE AlbumSongs
 
 -- Create Playlist table
 CREATE TABLE Playlist (
@@ -76,13 +77,15 @@ CREATE TABLE UserListeningHistory (
     listeningDate DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE user_follows_artists (
-    username VARCHAR(50) NOT NULL,
-    artistID INT NOT NULL,
-    PRIMARY KEY (username, artistID),
-    FOREIGN KEY (username) REFERENCES [User](username),
-    FOREIGN KEY (artistID) REFERENCES Artist(artistID)
-);
+
+
+    CREATE TABLE user_follows_artists (
+        username VARCHAR(50) NOT NULL,
+        artistID INT NOT NULL,
+        PRIMARY KEY (username, artistID),
+        FOREIGN KEY (username) REFERENCES [User](username),
+        FOREIGN KEY (artistID) REFERENCES Artist(artistID)
+    );
 
 
 
@@ -102,18 +105,4 @@ END
 DISABLE TRIGGER CheckUserAge ON [User];
 
 
-CREATE TRIGGER InsertIntoAlbumSongs
-ON Song
-AFTER INSERT
-AS
-BEGIN
-    SET NOCOUNT ON;
 
-    
-    INSERT INTO AlbumSongs (albumID, songID)
-    SELECT inserted.albumID, inserted.songID
-    FROM inserted
-    WHERE inserted.albumID IS NOT NULL;
-END;
-
-select * from [user]

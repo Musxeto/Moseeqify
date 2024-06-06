@@ -5,15 +5,15 @@ CREATE TRIGGER trgAfterInsertUser ON [User]
 AFTER INSERT
 AS
 BEGIN
-    DECLARE @username VARCHAR(50), @name VARCHAR(100), @email VARCHAR(100), @dob DATE, @dateJoined DATETIME;
+    DECLARE @username VARCHAR(50), @name VARCHAR(100), @email VARCHAR(100),@password VARCHAR(100), @dob DATE, @dateJoined DATETIME;
 
     SELECT @username = INSERTED.username, @name = INSERTED.name, @dob = INSERTED.dob, 
-           @dateJoined = INSERTED.dateJoined, @email = INSERTED.email
+           @dateJoined = INSERTED.dateJoined, @email = INSERTED.email,@password = INSERTED.password
     FROM INSERTED;
 
-    PRINT 'New user inserted: Username = ' + @username + ', Name = ' + @name + ', Email = ' + @email + ', Date of Birth = ' + CONVERT(VARCHAR, @dob, 120) + ', Date Joined = ' + CONVERT(VARCHAR, @dateJoined, 120);
+    PRINT 'New user inserted: Username = ' + @username + ', Name = ' + @name + ', Email = ' + @email + ', password = '+@password +', Date of Birth = ' + CONVERT(VARCHAR, @dob, 120) + ', Date Joined = ' + CONVERT(VARCHAR, @dateJoined, 120);
 END;
-
+drop trigger trgAfterInsertUser
 /*trigger that displays the message after update the existing record*/
 
 CREATE TRIGGER trgAfterUpdateUser ON [User]
