@@ -38,7 +38,7 @@ CREATE TABLE Song (
     albumID INT REFERENCES Album(albumID),
     genreName VARCHAR(50) REFERENCES Genre(genreName),
     duration TIME NOT NULL, -- Added NOT NULL constraint
-    audiolink VARCHAR(255) NOT NULL,
+    audiolink VARCHAR(500) NOT NULL,
     releaseDate DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 -- Create AlbumSongs table
@@ -88,4 +88,6 @@ END
 DISABLE TRIGGER CheckUserAge ON [User];
 
 
-
+select * from Artist
+select * from Album
+select * from Song

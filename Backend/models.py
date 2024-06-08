@@ -65,6 +65,13 @@ class Playlist(db.Model):
     username = db.Column(db.String(50), db.ForeignKey('user.username'), nullable=False)
     songs = db.relationship('Song', secondary='PlaylistSongs', backref=db.backref('playlists', lazy=True))
 
+    def serialize(self):
+        return {
+            "id": self.playlistID,
+            "name": self.name,
+            "username": self.username,
+            "songs": [song.serialize() for song in self.songs]  # Assuming Song model has a serialize method
+        }
 class PlaylistSongs(db.Model):
     __tablename__ = 'PlaylistSongs'
     playlistID = db.Column(db.Integer, db.ForeignKey('playlist.playlistID'), primary_key=True)

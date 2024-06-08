@@ -6,6 +6,8 @@ from sqlalchemy.exc import IntegrityError
 from functools import wraps
 from models import User, UserListeningHistory, UserFollowsArtists, Artist, Album, AlbumSongs, PlaylistSongs, Playlist, Song
 from models import db
+import logging
+
 app = Flask(__name__)
 app.config.from_object('config.Config')
 
@@ -80,29 +82,63 @@ def logout():
     return jsonify({"message": "Logged out successfully"}), 200
 
 # Play Song
-@app.route('/play-song/<int:song_id>', methods=['GET'])
-@login_required
-def play_song(song_id):
-    song = Song.query.get_or_404(song_id)
-    # Save listening history
-    listening_history = UserListeningHistory(username=current_user.username, songID=song.songID)
-    db.session.add(listening_history)
-    db.session.commit()
-    return jsonify({"audio_link": song.audiolink}), 200
+from flask import request
 
-# Play Song from Playlist
-@app.route('/playlists/<int:playlist_id>/play-song/<int:song_id>', methods=['GET'])
-@login_required
-def play_song_from_playlist(playlist_id, song_id):
-    playlist = Playlist.query.get_or_404(playlist_id)
-    song = Song.query.get_or_404(song_id)
-    if song in playlist.songs:
-        # Save listening history
-        listening_history = UserListeningHistory(username=current_user.username, songID=song.songID)
+
+@app.route('/save-to-history/<int:song_id>', methods=['POST'])
+def save_to_history(song_id):
+    try:
+        data = request.get_json()
+        username = data.get('username')
+        if not username:
+            return jsonify({"error": "Username is missing"}), 400
+
+        # Fetch the song from the database
+        song = Song.query.get_or_404(song_id)
+
+        # Log the song ID for debugging
+        app.logger.info(f"Received request to save song with ID: {song_id}")
+
+        # Create a new entry in the listening history
+        listening_history = UserListeningHistory(username=username, songID=song.songID)
         db.session.add(listening_history)
         db.session.commit()
-        return jsonify({"audio_link": song.audiolink}), 200
-    return jsonify({"message": "Song not found in playlist"}), 404
+
+        # Log success message
+        app.logger.info("Song saved to listening history successfully")
+
+        return jsonify({"message": "Song saved to listening history successfully"}), 200
+    except Exception as e:
+        # Log the error message
+        app.logger.error(f"Error saving song to listening history: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/playlists', methods=['POST'])
+def create_playlist():
+    print(f"Request method: {request.method}")
+    data = request.get_json()
+    name = data.get('name')
+    username = data.get('username')
+    if not name:
+        return jsonify({"message": "Missing playlist name"}), 400
+
+    playlist = Playlist(name=name, username=username)
+    db.session.add(playlist)
+    db.session.commit()
+    return jsonify(playlist.serialize()), 201
+
+
+@app.route('/playlists/<int:playlist_id>/add-song/<int:song_id>', methods=['POST'])
+def add_song_to_playlist(playlist_id, song_id):
+    playlist = Playlist.query.get_or_404(playlist_id)
+    song = Song.query.get_or_404(song_id)
+
+    if song not in playlist.songs:
+        playlist.songs.append(song)
+        db.session.commit()
+        return jsonify({"message": "Song added to playlist successfully"}), 200
+    else:
+        return jsonify({"message": "Song already exists in playlist"}), 409
 
 # Get Specific Album
 @app.route('/albums/<int:album_id>/', methods=['GET'])
@@ -130,7 +166,7 @@ def get_all_songs():
         "title": song.title,
         "artist": song.artist.name,
         "url": song.audiolink,
-        "album": song.album.name
+        "album": song.albumID
     } for song in songs]
     return jsonify(songs_data), 200
 
@@ -149,72 +185,28 @@ def get_all_albums():
     return jsonify(albums_data), 200
 
 # Manage Playlists
-# Create Playlist
-@app.route('/playlists', methods=['POST'])
-@login_required
-def create_playlist():
-    data = request.get_json()
-    name = data.get('name')
-    if not name:
-        return jsonify({"message": "Missing name"}), 400
-    playlist = Playlist(name=name, username=current_user.username)
-    db.session.add(playlist)
-    db.session.commit()
-    return jsonify({"message": "Playlist created successfully"}), 201
+@app.route('/playlists', methods=['GET'])
+def get_all_playlists():
+    playlists = Playlist.query.all()
+    playlists_data = [{
+        "id": playlist.playlistID,
+        "name": playlist.name,
+        "username": playlist.username,
+        "songs": [song.serialize() for song in playlist.songs]
+    } for playlist in playlists]
+    return jsonify(playlists_data), 200
 
-# Update Playlist
-@app.route('/playlists/<int:playlist_id>', methods=['PUT'])
-@login_required
-def update_playlist(playlist_id):
+# Get a specific Playlidt
+@app.route('/playlists/<int:playlist_id>', methods=['GET'])
+def get_playlist(playlist_id):
     playlist = Playlist.query.get_or_404(playlist_id)
-    data = request.get_json()
-    new_name = data.get('name')
-    if not new_name:
-        return jsonify({"message": "Missing name"}), 400
-    playlist.name = new_name
-    db.session.commit()
-    return jsonify({"message": "Playlist updated successfully"}), 200
-
-# Delete Playlist
-@app.route('/playlists/<int:playlist_id>', methods=['DELETE'])
-@login_required
-def delete_playlist(playlist_id):
-    playlist = Playlist.query.get_or_404(playlist_id)
-    db.session.delete(playlist)
-    db.session.commit()
-    return jsonify({"message": "Playlist deleted successfully"}), 200
-
-# Add Song to Playlist
-@app.route('/playlists/<int:playlist_id>/add-song', methods=['POST'])
-@login_required
-def add_song_to_playlist(playlist_id):
-    data = request.get_json()
-    song_id = data.get('song_id')
-    if not song_id:
-        return jsonify({"message": "Missing song_id"}), 400
-    playlist = Playlist.query.get_or_404(playlist_id)
-    song = Song.query.get_or_404(song_id)
-    if song not in playlist.songs:
-        playlist.songs.append(song)
-        db.session.commit()
-        return jsonify({"message": "Song added to playlist successfully"}), 200
-    return jsonify({"message": "Song already exists in playlist"}), 409
-
-# Remove Song from Playlist
-@app.route('/playlists/<int:playlist_id>/remove-song', methods=['POST'])
-@login_required
-def remove_song_from_playlist(playlist_id):
-    data = request.get_json()
-    song_id = data.get('song_id')
-    if not song_id:
-        return jsonify({"message": "Missing song_id"}), 400
-    playlist = Playlist.query.get_or_404(playlist_id)
-    song = Song.query.get_or_404(song_id)
-    if song in playlist.songs:
-        playlist.songs.remove(song)
-        db.session.commit()
-        return jsonify({"message": "Song removed from playlist successfully"}), 200
-    return jsonify({"message": "Song not found in playlist"}), 404
+    playlist_data = {
+        "id": playlist.playlistID,
+        "name": playlist.name,
+        "username": playlist.username,
+        "songs": [song.serialize() for song in playlist.songs]
+    }
+    return jsonify(playlist_data), 200
 
 # Search Songs
 @app.route('/search', methods=['POST'])

@@ -58,14 +58,46 @@ VALUES
     ('Default Mic', 2, 2, 'Rap', '00:01:29', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Mustafa%20G.M%20-%20default%20mic%20%5Bprod.%20HeyyLotus%5D%202023-04-29%2010_32.m4a?alt=media&token=1b4b8d49-56c0-4340-beae-e859f22c9e343', '2023-04-30')
 
 
-
-    playlistID INT PRIMARY KEY IDENTITY(1,1),
-    name VARCHAR(100) NOT NULL, -- Added NOT NULL constraint
-    creationdate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    username VARCHAR(50) NOT NULL REFERENCES [User](username)
-
 INSERT INTO Playlist (NAME, username) VALUES ('Ammad Ki Playlist', 'nashanul')
 
 
 INSERT INTO PlaylistSongs (playlistID,songID) values 
 	(1,76),(1,77),(1,78),(1,79)
+
+
+INSERT INTO Artist (name, bio, profilepiclink) VALUES
+('Sidhu Moose Wala', 'Punjabi singer, lyricist, rapper and actor associated with Punjabi music and Punjabi cinema.', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/sidhu.jpg?alt=media&token=a124f84a-f9e3-472d-9d8f-d29f68df0f01'),
+('Karan Aujla', 'Indian singer, lyricist, and rapper known for his work in Punjabi music.', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/karan.jpeg?alt=media&token=6863bea4-4888-498f-a876-4c5a11ee44db');
+
+INSERT INTO Genre (genreName) VALUES
+('Punjabi');
+
+INSERT INTO Album (name, artistID, releasedate, coverimagelink)
+VALUES 
+    ('Moosetape', (SELECT artistID FROM Artist WHERE name = 'Sidhu Moose Wala'), '2021-05-15', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/moosetape.jpg?alt=media&token=f064396f-ac62-4e01-8350-c26d30d70ca5'),
+    ('BTFU', (SELECT artistID FROM Artist WHERE name = 'Karan Aujla'), '2021-09-15', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/karan-album.jpeg?alt=media&token=8507537c-0239-49f7-8e6f-ed45ef6a3720/btfu.png?alt=media&token=45678901-4567-4567-4567-456789012345');
+
+
+INSERT INTO Song (title, artistID, albumID, genreName, duration, audiolink)
+VALUES 
+('295', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:04:32', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/295%20(Official%20Audio)%20%20Sidhu%20Moose%20Wala%20%20The%20Kidd%20%20Moosetape-n_FCrCQ6-bA-160k-1657239416482.mp3?alt=media&token=3f40a97f-29c3-4c8e-b4e0-34a63d5f073a'),
+('0 To 100', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:01:48', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/0%20TO%20100%20%20Sidhu%20Moose%20Wala%20%20Official%20Visual%20Video%20%20Mxrci%20%20New%20Song%202022-pHtHF5Amw8Q-160k-1657318275924.mp3?alt=media&token=f7b34a6e-8635-430b-a2b8-e517ca6c8e71'),
+('8 CYLINDER', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'BTFU'), 'Hip Hop', '00:03:13', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/8%20CYLINDER%20(Full%20Song)%20Sidhu%20Moose%20Wala%20%20Latest%20Punjabi%20Songs%202020-MiCk8UoPl1Y-160k-1657322067774.mp3?alt=media&token=5e1d678b-1c6f-4dde-94a1-b80c3c0db4e9'),
+('BLOOD LUST', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:02:39', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/BLOODLUST%20%20Sidhu%20Moose%20Wala%20%20Mr%20Capone%20%20Snappy%20%20Official%20Visual%20Video%20%20New%20Song%202022-GauAxW3x2l4-160k-1657318472643.mp3?alt=media&token=6163fa50-0cbe-4b1b-b52e-83f7dc96fbfa'),
+('Bachk Bachke', (SELECT artistID FROM artist WHERE name = 'Karan Aujla'), (SELECT albumID FROM album WHERE name = 'BTFU'), 'Hip Hop', '00:03:53', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Bachke%20Bachke%20(Full%20Video)%20Karan%20Aujla%20I%20Ikky%20%20Latest%20Punjabi%20Songs%202023.mp3?alt=media&token=7eb54bd6-d4a3-4599-979c-e86cd3ddd534'),
+('Bitch Im Back', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:03:54', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Bitch%20Im%20Back%20(Official%20Audio)%20-%20Sidhu%20Moose%20Wala%20%20Moosetape-W5NgXKe4SJk-160k-1657320800105.mp3?alt=media&token=c455c2c3-270a-4a77-bbcd-100881f050c2'),
+('Burberry ', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:03:35', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Burberry%20(Official%20Video)%20Sidhu%20Moose%20Wala%20%20Moosetape%20%20The%20Kidd%20%20Teji%20Sandhu-I1Llz8075MA-160k-1657320888286.mp3?alt=media&token=4abfc28f-4b30-4240-b22f-f4787fa8e3bf'),
+('Celebrity Killer', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:03:35', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Celebrity%20Killer%20(Full%20Video)%20%20Sidhu%20Moose%20Wala%20%20Tion%20Wayne%20%20Raf-Saperra%20%20Moosetape-MyYAglA_Cdk-160k-1657306269745.mp3?alt=media&token=53db7878-4db7-4fb4-881b-466f0c470ea5'),
+('Chitta Kurta', (SELECT artistID FROM artist WHERE name = 'Karan Aujla'), (SELECT albumID FROM album WHERE name = 'BTFU'), 'Hip Hop', '00:03:35', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Chitta%20Kurta%20(Full%20video)%20Karan%20Aujla%20feat.%20Gurlez%20Akhtar%20%20Deep%20jandu%20%20Punjabi%20Songs%202019.mp3?alt=media&token=e9b93116-0bb8-49ab-a7b3-a43db0519d04'),
+('Dont Look', (SELECT artistID FROM artist WHERE name = 'Karan Aujla'), (SELECT albumID FROM album WHERE name = 'BTFU'), 'Hip Hop', '00:04:09', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Dont%20Look%20(4K%20Video)%20Karan%20Aujla%20%20Rupan%20Bal%20%20Jay%20Trak%20%20Latest%20Punjabi%20Songs%202019.mp3?alt=media&token=0d8dea76-6f43-4ce5-b6f2-4e687a3c5fcc'),
+('EVERYBODY HURT', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'BTFU'), 'Hip Hop', '00:02:50', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/EVERYBODY%20HURTS%20%20Sidhu%20Moose%20Wala%20%20Jayb%20%20Official%20Visual%20Video%20%20New%20Song%202022-Eu-CJl1bsIU-160k-1657311806509.mp3?alt=media&token=1f9c6b2c-6e77-4bda-8a8a-49c0fb0f615a'),
+('Fk Em All', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:03:55', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Fk%20Em%20All%20(Official%20Music%20Video)%20Sidhu%20Moose%20Wala%20%20%20Sunny%20Malton-GzFnLZ2gyBY-160k-1657305258578.mp3?alt=media&token=06ebb70f-be63-4485-82e1-e592f0a96464'),
+('G Shit', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:04:13', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/G%20Shit%20(Full%20Video)%20Sidhu%20Moose%20Wala%20%20Blockboi%20Twitch%20%20The%20Kidd%20%20Sukh%20Sanghera%20%20Moosetape-YPPEZiDF4Xw-160k-1657292715431.mp3?alt=media&token=a468e21c-eb19-4ef2-95a5-787cfc7364ae'),
+('GAME', (SELECT artistID FROM artist WHERE name = 'Karan Aujla'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:04:46', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/GAME%20%20(Full%20Video)%20%20Shooter%20Kahlon%20%20Sidhu%20Moose%20Wala%20%20Hunny%20PK%20Films%20%20Gold%20Media%20%205911%20Records-2L6gsn7rGqI-160k-1657320926529.mp3?alt=media&token=bfdbef92-0341-44a5-ad6a-b84db527a2ef'),
+('GOAT', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:04:05', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/GOAT%20(Full%20Video)%20Sidhu%20Moose%20Wala%20%20Wazir%20Patar%20%20Sukh%20Sanghera%20%20Moosetape-M8vDwlHigJA-160k-1656088226841.mp3?alt=media&token=dc5cee26-8f99-444d-b42a-f6c7f95d5f00'),
+('Gangstar', (SELECT artistID FROM artist WHERE name = 'Karan Aujla'), (SELECT albumID FROM album WHERE name = 'BTFU'), 'Hip Hop', '00:03:13', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Gangsta%20-%20Karan%20Aujla%20Ft.%20YG%20_%20Rupan%20Bal%20_%20Yeah%20Proof%20(Official%20Music%20Video).mp3?alt=media&token=36b60e62-0acb-4a3b-8a45-f823a2a89023'),
+('Haan Haige', (SELECT artistID FROM artist WHERE name = 'Karan Aujla'), (SELECT albumID FROM album WHERE name = 'BTFU'), 'Hip Hop', '00:03:48', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Haan%20Haige%20aa%20(FULL%20VIDEO)%20KARAN%20AUJLA%20ft.%20Gurlez%20Akhtar%20I%20Rupan%20Bal%20I%20Avvy%20Sra%20I%20Latest%20Song%202020.mp3?alt=media&token=b96229df-8b95-4231-8ddf-859b118eec37'),
+('KIWE KADOGE', (SELECT artistID FROM artist WHERE name = 'Karan Aujla'), (SELECT albumID FROM album WHERE name = 'Sidhu Moose Wala'), 'Hip Hop', '00:03:24', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/KIWE%20KADOGE%20%20Gulab%20Sidhu%20%20Sidhu%20Moose%20Wala%20%20New%20Punjabi%20Song%202022-V4k3RigFOSw-160k-1657319273773.mp3?alt=media&token=26de27ae-446c-410c-9ba9-5ff1eab9977b'),
+('Kya Baat Aa', (SELECT artistID FROM artist WHERE name = 'Karan Aujla'), (SELECT albumID FROM album WHERE name = 'BTFU'), 'Hip Hop', '00:04:15', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Kya%20Baat%20Aa%20_%20Karan%20Aujla%20(Official%20Video)%20Tania%20%20Desi%20Crew%20%20Latest%20Punjabi%20Songs.mp3?alt=media&token=b361db80-bfbd-408e-be5b-615c5e66b8f0'),
+('Legend', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:04:32', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/LEGEND%20-%20SIDHU%20MOOSE%20WALA%20%20The%20Kidd%20%20Gold%20Media%20%20Latest%20Punjabi%20Songs%202020-YZAFd9o3RYQ-160k-1657067771111.mp3?alt=media&token=0eddf2d4-575a-45fe-a156-57aa957febf5'),
+('LEVELS', (SELECT artistID FROM artist WHERE name = 'Sidhu Moose Wala'), (SELECT albumID FROM album WHERE name = 'Moosetape'), 'Hip Hop', '00:03:51', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/LEVELS%20-%20Official%20Video%20%20Sidhu%20Moose%20Wala%20ft%20Sunny%20Malton%20%20The%20Kidd-tpFljbJxZiw-160k-1655261492873.mp3?alt=media&token=6457dce9-5f84-468a-b938-ef2ce73b48b2');
