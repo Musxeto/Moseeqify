@@ -412,6 +412,11 @@ BEGIN
     PRINT 'A user listening history record has been deleted.';
 END;
 
+
+DISABLE TRIGGER CheckUserAge ON [User];
+DISABLE TRIGGER CheckUserAge ON [User];
+DISABLE TRIGGER CheckUserAge ON [User];
+
 /*trigger that displays the message after insert the record in the userfloowsArtist */
 
 CREATE TRIGGER trgAfterInsertUserFollowsArtists ON user_follows_artists

@@ -91,6 +91,7 @@ def save_to_history(song_id):
         data = request.get_json()
         username = data.get('username')
         if not username:
+            app.logger.error("Username is missing in request payload")
             return jsonify({"error": "Username is missing"}), 400
 
         # Fetch the song from the database
