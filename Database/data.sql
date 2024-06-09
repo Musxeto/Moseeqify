@@ -129,3 +129,44 @@ VALUES
 ('MAIN AGAR', (SELECT artistID FROM artist WHERE name = 'Atif Aslam'), (SELECT albumID FROM album WHERE name = 'Best of Atif Aslam'), 'Romantic', '00:03:26', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Main%20Agar.mp3?alt=media&token=53f2648e-961c-49ed-b59e-a6ec60cd928a'),
 ('TERE BIN', (SELECT artistID FROM artist WHERE name = 'Atif Aslam'), (SELECT albumID FROM album WHERE name = 'Best of Atif Aslam'), 'Sad', '00:06:05', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/TERE%20BIN.mp3?alt=media&token=3425c8f8-5c09-48ed-a844-6674daddacb6'),
 ('WO LAMHE', (SELECT artistID FROM artist WHERE name = 'Atif Aslam'), (SELECT albumID FROM album WHERE name = 'Best of Atif Aslam'), 'Romantic', '00:05:31', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Woh%20Lamhe%20Woh%20Baatein.mp3?alt=media&token=85e5abb4-bc63-4835-a107-40434ba32a3b');
+
+
+INSERT INTO Artist (name, bio, profilepiclink)
+VALUES ('Otilia', 'Romanian singer and song writer', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/otilia.jpeg?alt=media&token=a8be9bf4-d677-4694-bfb3-9b2b3fab3903');
+
+INSERT INTO Album (name, artistID, releasedate, coverimagelink)
+VALUES ('Best of otilia', (SELECT artistID FROM artist WHERE name = 'Otilia'), '2019-08-09', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Otilia%20album.jpg?alt=media&token=73258e6f-c63d-43dc-85a6-80b8da67825e');
+
+INSERT INTO Genre (genreName)
+    VALUES ('Romanian');
+
+INSERT INTO Song (title, artistID, albumID, genreName, duration, audiolink)
+VALUES 
+('Bilionera ', (SELECT artistID FROM artist WHERE name = 'Otilia'), (SELECT albumID FROM album WHERE name = 'Best of otilia'), 'Romanian', '00:03:05', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Bilionera%20(Radio%20Edit).mp3?alt=media&token=d0738a7b-650b-4932-8a31-523c1b49f3d7'),
+('Jannu Jannu', (SELECT artistID FROM artist WHERE name = 'Otilia'), (SELECT albumID FROM album WHERE name = 'Best of otilia'), 'Romanian', '00:02:39', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Otilia%20-%20Jaanu%20Jaanu%20%20Official%20Video.mp3?alt=media&token=b3261f95-3769-4b28-9aa1-11f3c3a7e03d'),
+('Tres Amores', (SELECT artistID FROM artist WHERE name = 'Otilia'), (SELECT albumID FROM album WHERE name = 'Best of otilia'), 'Romanian', '00:03:07', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Otilia%20%20Tres%20Amores%20%2C%20Audio.mp3?alt=media&token=e5388859-08e2-405c-afb5-92e4cae0c84a'),
+('Deli Gibi', (SELECT artistID FROM artist WHERE name = 'Otilia'), (SELECT albumID FROM album WHERE name = 'Best of otilia'), 'Romanian', '00:03:26', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Otilia%20-%20Deli%20Gibi%20(Official%20video)%20NEW.mp3?alt=media&token=cca3684c-4d67-456a-9c12-4cd5f87cc064'),
+('You You', (SELECT artistID FROM artist WHERE name = 'Otilia'), (SELECT albumID FROM album WHERE name = 'Best of otilia'), 'Romanian', '00:03:14', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Otilia%20-%20You%20you.mp3?alt=media&token=266b98d7-929d-48be-9321-bfece4b7e63a'),
+('Prisionera', (SELECT artistID FROM artist WHERE name = 'Otilia'), (SELECT albumID FROM album WHERE name = 'Best of otilia'), 'Romanian', '00:02:57', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Otilia%20-%20Prisionera%20(%20official%20video%20)%20%20Shakira%20similar%20voice.mp3?alt=media&token=4b379c14-3b50-470f-ba3c-9c097340b6c7'),
+('Amor Real', (SELECT artistID FROM artist WHERE name = 'Otilia'), (SELECT albumID FROM album WHERE name = 'Best of otilia'), 'Romanian', '00:02:32', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Otilia%20-%20%20%20Amor%20real%20(PARA%20DEEP%20remix)%20New%20video.mp3?alt=media&token=4e745a41-56f8-4b7f-9444-af6742f5a0fa'),
+('french Kiss', (SELECT artistID FROM artist WHERE name = 'Otilia'), (SELECT albumID FROM album WHERE name = 'Best of otilia'), 'Romanian', '00:03:30', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Deep%20House%20Music%20%20Otilia%20-%20French%20Kiss%2C%20new%20music%20(song%20by%20Otilia%20Bilionera).mp3?alt=media&token=49e1cc49-3249-48d4-b368-f4ae0325b49a'),
+('I Dont Know', (SELECT artistID FROM artist WHERE name = 'Otilia'), (SELECT albumID FROM album WHERE name = 'Best of otilia'), 'Romanian', '00:02:56', "https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Otilia%20ft.%20Deejay%20Fly%20-%20I%20don't%20know%20(MD%20Dj%20Remix)%20by%20Otilia%20Bilionera.mp3?alt=media&token=440d9dc8-3e3a-46a8-87c0-1f46317a2132")
+
+INSERT INTO Artist (name, bio, profilepiclink)
+VALUES ('AUR', 'Pakistnai band Ahad,Usama,Raffey', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Screenshot%202024-06-09%20172800.png?alt=media&token=413141cb-87fe-4249-90ce-838aaaaa2281');
+
+
+INSERT INTO Album (name, artistID, releasedate, coverimagelink)
+VALUES ('AUR', (SELECT artistID FROM artist WHERE name = 'AUR'), '2018-09-02', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/images.jpeg?alt=media&token=b1a53892-b8ba-464e-8d49-fedcf44735d2');
+
+INSERT INTO Song (title, artistID, albumID, genreName, duration, audiolink)
+VALUES 
+('shikayat', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:04:33', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20SHIKAYAT%20-%20Raffey%20-%20Usama%20-%20Ahad%20(Official%20Music%20Video).mp3?alt=media&token=bd88903f-af2e-4ce8-862a-a8bb51f69858'),
+('Tu hai kahan', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:04:24', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20TU%20HAI%20KAHAN%20-%20Raffey%20-%20Usama%20-%20Ahad%20(Official%20Music%20Video).mp3?alt=media&token=64c23bdd-b01e-4492-8145-25df10eb96a7'),
+('Aja mahi', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:03:42', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20Aaja%20Mahi%20-%20Ahad%20-%20Usama%20-%20Raffey%20(Official%20Music%20Video).mp3?alt=media&token=5debacbc-9971-4578-9da0-9f67c9ad791f'),
+('no way to nowhere', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:03:04', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20NO%20WAY%20TO%20NOWHERE%20-%20Raffey%20-%20Usama%20-%20Ahad%20(Official%20Music%20Video).mp3?alt=media&token=cc4b5b6a-a631-4b07-811c-8c332294ebc3'),
+('sometimes', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:03:16', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20SOMETIMES%20-%20Raffey%20-%20Usama%20-%20Ahad%20(Official%20Audio).mp3?alt=media&token=bb3a8a05-4e33-4d2f-968a-ed71c9cde49f'),
+('tanha', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:03:32', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20TANHA%20-%20Raffey%20-%20Usama%20-%20Ahad%20(Official%20Video).mp3?alt=media&token=786a2a39-09ba-476d-b73b-b9ac1e1df871'),
+('chehre', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:04:56', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20CHEHRE%20-%20Raffey%20-%20Ahad%20-%20Usama%20-%20ft.%20Taimour%20Baig%20(Official%20Audio).mp3?alt=media&token=0b6d6544-e091-4278-9055-0e517f5d7037'),
+('dooriyan', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:04:28', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20DOORIYAAN%20-%20Raffey%20-%20Ahad%20-%20Usama%20(Official%20Audio).mp3?alt=media&token=d430b73e-f20d-4cc9-927b-effa84748755'),
+('kahan', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:03:40', "https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20KAHAN%20-%20Raffey%20-%20Ahad%20-%20Usama%20-%20%20(Official%20Audio).mp3?alt=media&token=c1f8d7df-9dff-418d-b6c8-8aaf6d50b610")  
