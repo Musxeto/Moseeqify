@@ -36,13 +36,13 @@ const PlaylistsPage = () => {
         </button>
         <div className="flex flex-col space-y-2">
           {playlists.map((playlist) => (
-            <Link to={`/playlists/${playlist.id}`}>
-              <div key={playlist.id} className="bg-gray-800 p-4 rounded-lg">
+            <div key={playlist.id} className="bg-gray-800 p-4 rounded-lg">
+              <Link to={`/playlists/${playlist.id}`}>
                 <h2 className="text-xl font-bold text-white">
                   {playlist.name}
                 </h2>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))}
         </div>
       </div>

@@ -3,7 +3,7 @@ import axios from "axios";
 
 const AddSongToPlaylistModal = ({ isOpen, onClose, songId }) => {
   const [selectedPlaylistId, setSelectedPlaylistId] = useState("");
-  const [playlists, setPlaylists] = useState();
+  const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -15,8 +15,10 @@ const AddSongToPlaylistModal = ({ isOpen, onClose, songId }) => {
       }
     };
 
-    fetchPlaylists();
-  }, []);
+    if (isOpen) {
+      fetchPlaylists();
+    }
+  }, [isOpen]);
 
   const handleAddToPlaylist = async () => {
     try {
@@ -41,11 +43,15 @@ const AddSongToPlaylistModal = ({ isOpen, onClose, songId }) => {
           onChange={(e) => setSelectedPlaylistId(e.target.value)}
         >
           <option value="">Select Playlist</option>
-          {playlists.map((playlist) => (
-            <option key={playlist.id} value={playlist.id}>
-              {playlist.name}
-            </option>
-          ))}
+          {playlists.length > 0 ? (
+            playlists.map((playlist) => (
+              <option key={playlist.id} value={playlist.id}>
+                {playlist.name}
+              </option>
+            ))
+          ) : (
+            <option disabled>No playlists available</option>
+          )}
         </select>
         <div className="flex justify-end">
           <button
@@ -59,6 +65,7 @@ const AddSongToPlaylistModal = ({ isOpen, onClose, songId }) => {
             type="button"
             className="bg-blue-500 text-white px-4 py-2 rounded"
             onClick={handleAddToPlaylist}
+            disabled={!selectedPlaylistId}
           >
             Add
           </button>

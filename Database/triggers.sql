@@ -370,52 +370,6 @@ BEGIN
     PRINT 'A playlist-songs record has been deleted.';
 END;
 
-/*trigger that displays the message after inserts the record in the userlisteninghistory */
-
-CREATE TRIGGER trgAfterInsertUserListeningHistory ON UserListeningHistory
-AFTER INSERT
-AS
-BEGIN
-    DECLARE @username VARCHAR(50), @songID INT, @listeningDate DATETIME;
-
-    SELECT @username = username, @songID = songID, @listeningDate = listeningDate
-    FROM INSERTED;
-
-    PRINT 'New User Listening History inserted: Username = ' + @username + 
-          ', SongID = ' + CAST(@songID AS VARCHAR(10)) + 
-          ', Listening Date = ' + CONVERT(VARCHAR, @listeningDate, 120);
-END;
-
-/*trigger that displays the message after updates the record in the userlisteninghistory */
-
-CREATE TRIGGER trgAfterUpdateUserListeningHistory ON UserListeningHistory
-AFTER UPDATE
-AS
-BEGIN
-    DECLARE @username VARCHAR(50), @songID INT, @listeningDate DATETIME;
-    DECLARE @oldUsername VARCHAR(50), @oldSongID INT, @oldListeningDate DATETIME;
-    DECLARE @newUsername VARCHAR(50), @newSongID INT, @newListeningDate DATETIME;
-
-    SELECT @oldUsername = DELETED.username, @oldSongID = DELETED.songID, @oldListeningDate = DELETED.listeningDate,
-           @newUsername = INSERTED.username, @newSongID = INSERTED.songID, @newListeningDate = INSERTED.listeningDate
-    FROM INSERTED,DELETED
-    PRINT 'User Listening History updated: Old Username = ' + @oldUsername + ', New Username = ' + @newUsername + 
-          ', Old SongID = ' + CAST(@oldSongID AS VARCHAR(10)) + ', New SongID = ' + CAST(@newSongID AS VARCHAR(10)) +
-          ', Old Listening Date = ' + CONVERT(VARCHAR, @oldListeningDate, 120) + ', New Listening Date = ' + CONVERT(VARCHAR, @newListeningDate, 120);
-END;
-
-/*delete trigger for userlisteninghistory*/
-CREATE TRIGGER trgAfterDeleteUserListeningHistory ON UserListeningHistory
-AFTER DELETE
-AS
-BEGIN
-    PRINT 'A user listening history record has been deleted.';
-END;
-
-
-DISABLE TRIGGER CheckUserAge ON [User];
-DISABLE TRIGGER CheckUserAge ON [User];
-DISABLE TRIGGER CheckUserAge ON [User];
 
 /*trigger that displays the message after insert the record in the userfloowsArtist */
 

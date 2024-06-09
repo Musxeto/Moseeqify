@@ -73,6 +73,7 @@ CREATE TABLE UserListeningHistory (
         FOREIGN KEY (username) REFERENCES [User](username),
         FOREIGN KEY (artistID) REFERENCES Artist(artistID)
     );
+
 -- Add trigger to enforce age constraint for users
 Create TRIGGER CheckUserAge
 ON [User]
@@ -85,9 +86,10 @@ BEGIN
         ROLLBACK TRANSACTION
     END
 END
+
 DISABLE TRIGGER CheckUserAge ON [User];
 
 
-select * from Artist
-select * from Album
-select * from Song
+select * from [user]
+select * from playlist
+insert into playlist (name, username) values ('I hate farhan sarwar','AmmadNew')
