@@ -16,8 +16,9 @@ CREATE TABLE Artist (
     artistID INT PRIMARY KEY IDENTITY(1,1),
     name VARCHAR(100) UNIQUE NOT NULL, -- Added UNIQUE constraint
     bio TEXT,
-    profilepiclink VARCHAR(255)
+    profilepiclink VARCHAR(500)
 );
+
 -- Create Genre table
 CREATE TABLE Genre (
     genreName VARCHAR(50) PRIMARY KEY
