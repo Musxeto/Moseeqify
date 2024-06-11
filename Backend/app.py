@@ -219,24 +219,6 @@ def search_songs():
     songs = Song.query.filter(Song.title.ilike(f'%{query}%')).all()
     return jsonify([{"id": song.songID, "title": song.title, "artist": song.artist.name, "audio_link": song.audiolink} for song in songs]), 200
 
-
-@app.route('/search-and-play', methods=['POST'])
-def search_and_play_songs():
-    data = request.get_json()
-    query = data.get('query')
-    if not query:
-        return jsonify({"message": "Missing query"}), 400
-    songs = Song.query.filter(Song.title.ilike(f'%{query}%')).all()
-    if songs:
-        # Play the first matching song
-        song = songs[0]
-        # Save listening history
-        listening_history = UserListeningHistory(username=current_user.username, songID=song.songID)
-        db.session.add(listening_history)
-        db.session.commit()
-        return jsonify({"audio_link": song.audiolink}), 200
-    return jsonify({"message": "No matching songs found"}), 404
-
 # Follow Artist
 @app.route('/follow-artist/<int:artist_id>', methods=['POST'])
 @login_required
@@ -259,53 +241,6 @@ def unfollow_artist(artist_id):
         return jsonify({"message": "Artist unfollowed successfully"}), 200
     return jsonify({"message": "Not following this artist"}), 404
 
-# Add Artist, Album, Song (Minimal Admin Facilities)
-@app.route('/admin/add-artist', methods=['POST'])
-@login_required
-def add_artist():
-    data = request.get_json()
-    name = data.get('name')
-    bio = data.get('bio')
-    if not name:
-        return jsonify({"message": "Missing name"}), 400
-    artist = Artist(name=name, bio=bio)
-    db.session.add(artist)
-    db.session.commit()
-    return jsonify({"message": "Artist added successfully"}), 201
-
-@app.route('/admin/add-album', methods=['POST'])
-@login_required
-def add_album():
-    data = request.get_json()
-    name = data.get('name')
-    artist_id = data.get('artist_id')
-    coverimagelink = data.get('coverimagelink')
-    if not all([name, artist_id]):
-        return jsonify({"message": "Missing name or artist_id"}), 400
-    artist = Artist.query.get_or_404(artist_id)
-    album = Album(name=name, artist=artist, coverimagelink= coverimagelink)
-    db.session.add(album)
-    db.session.commit()
-    return jsonify({"message": "Album added successfully"}), 201
-
-@app.route('/admin/add-song', methods=['POST'])
-@login_required
-def add_song():
-    data = request.get_json()
-    title = data.get('title')
-    artist_id = data.get('artist_id')
-    album_id = data.get('album_id')
-    genre_name = data.get('genre_name')
-    duration = data.get('duration')
-    audiolink = data.get('audiolink')
-    if not all([title, artist_id, duration, audiolink]):
-        return jsonify({"message": "Missing required fields"}), 400
-    artist = Artist.query.get_or_404(artist_id)
-    album = Album.query.get_or_404(album_id) if album_id else None
-    song = Song(title=title, artist=artist, album=album, genreName=genre_name, duration=duration, audiolink=audiolink)
-    db.session.add(song)
-    db.session.commit()
-    return jsonify({"message": "Song added successfully"}), 201
 
 # Fetch user listening history
 @app.route('/users/<username>/listening-history', methods=['GET'])
@@ -323,6 +258,55 @@ def get_listening_history(username):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+# # Add Artist, Album, Song (Minimal Admin Facilities)
+# @app.route('/admin/add-artist', methods=['POST'])
+# @login_required
+# def add_artist():
+#     data = request.get_json()
+#     name = data.get('name')
+#     bio = data.get('bio')
+#     if not name:
+#         return jsonify({"message": "Missing name"}), 400
+#     artist = Artist(name=name, bio=bio)
+#     db.session.add(artist)
+#     db.session.commit()
+#     return jsonify({"message": "Artist added successfully"}), 201
+#
+# @app.route('/admin/add-album', methods=['POST'])
+# @login_required
+# def add_album():
+#     data = request.get_json()
+#     name = data.get('name')
+#     artist_id = data.get('artist_id')
+#     coverimagelink = data.get('coverimagelink')
+#     if not all([name, artist_id]):
+#         return jsonify({"message": "Missing name or artist_id"}), 400
+#     artist = Artist.query.get_or_404(artist_id)
+#     album = Album(name=name, artist=artist, coverimagelink= coverimagelink)
+#     db.session.add(album)
+#     db.session.commit()
+#     return jsonify({"message": "Album added successfully"}), 201
+#
+# @app.route('/admin/add-song', methods=['POST'])
+# @login_required
+# def add_song():
+#     data = request.get_json()
+#     title = data.get('title')
+#     artist_id = data.get('artist_id')
+#     album_id = data.get('album_id')
+#     genre_name = data.get('genre_name')
+#     duration = data.get('duration')
+#     audiolink = data.get('audiolink')
+#     if not all([title, artist_id, duration, audiolink]):
+#         return jsonify({"message": "Missing required fields"}), 400
+#     artist = Artist.query.get_or_404(artist_id)
+#     album = Album.query.get_or_404(album_id) if album_id else None
+#     song = Song(title=title, artist=artist, album=album, genreName=genre_name, duration=duration, audiolink=audiolink)
+#     db.session.add(song)
+#     db.session.commit()
+#     return jsonify({"message": "Song added successfully"}), 201
 
 if __name__ == '__main__':
     app.run(debug=True)
