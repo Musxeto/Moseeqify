@@ -169,3 +169,21 @@ VALUES
 ('chehre', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:04:56', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20CHEHRE%20-%20Raffey%20-%20Ahad%20-%20Usama%20-%20ft.%20Taimour%20Baig%20(Official%20Audio).mp3?alt=media&token=0b6d6544-e091-4278-9055-0e517f5d7037'),
 ('dooriyan', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:04:28', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20DOORIYAAN%20-%20Raffey%20-%20Ahad%20-%20Usama%20(Official%20Audio).mp3?alt=media&token=d430b73e-f20d-4cc9-927b-effa84748755'),
 ('kahan', (SELECT artistID FROM artist WHERE name = 'AUR'), (SELECT albumID FROM album WHERE name = 'AUR'), 'Sad', '00:03:40', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AUR%20-%20KAHAN%20-%20Raffey%20-%20Ahad%20-%20Usama%20-%20%20(Official%20Audio).mp3?alt=media&token=c1f8d7df-9dff-418d-b6c8-8aaf6d50b610')  
+;
+
+
+
+INSERT INTO Artist (name, bio, profilepiclink)
+VALUES ('Arijit Singh', 'Indian Singer known for his sad songs', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Arijit%20Singh.jpg?alt=media&token=5cd7c310-bba2-493e-a988-a7f5751b5efa');
+
+
+INSERT INTO Album (name, artistID, releasedate, coverimagelink)
+VALUES ('DIL BECHARA', (SELECT artistID FROM artist WHERE name = 'Arijit Singh'), '2022-01-25', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Arijit%20Cover.jpg?alt=media&token=a12212b0-c35a-4e92-b5d2-51047f4d5b29');
+
+INSERT INTO Song (title, artistID, albumID, genreName, duration, audiolink)
+VALUES 
+('AGAR TUM SAATH HO', (SELECT artistID FROM artist WHERE name = 'Arijit Singh'), (SELECT albumID FROM album WHERE name = 'DIL BECHARA'), 'Romantic', '00:03:11', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/AGAR%20TUM%20SATH%20HO.mp3?alt=media&token=437f0cc2-37f4-4212-97fa-1cc2cd567b12'),
+('VE KAMLEYA', (SELECT artistID FROM artist WHERE name = 'Arijit Singh'), (SELECT albumID FROM album WHERE name = 'DIL BECHARA'), 'Romantic', '00:04:07', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Ve%20Kamleya%20(LYRICS)%20Arijit%20Singh%20%26%20Shreya%20Ghoshal%20%20Ranveer%2C%20Alia%20%20Rocky%20Aur%20Rani%20Ki%20Prem%20Kahani.mp3?alt=media&token=d2b99873-227e-446d-a4fe-0d3baf862abf'),
+('KHAMOSHIYAN', (SELECT artistID FROM artist WHERE name = 'Arijit Singh'), (SELECT albumID FROM album WHERE name = 'DIL BECHARA'), 'Sad', '00:06:13', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Khamoshiyan.mp3?alt=media&token=719fa8c8-0fb7-4000-88ad-562ad8a2f600'),
+('PAL', (SELECT artistID FROM artist WHERE name = 'Arijit Singh'), (SELECT albumID FROM album WHERE name = 'DIL BECHARA'), 'Romantic', '00:04:32', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Pal.mp3?alt=media&token=fdfce7b4-fab5-46a0-b785-86f1dc19fbed'),
+('DEKH LANA', (SELECT artistID FROM artist WHERE name = 'Arijit Singh'), (SELECT albumID FROM album WHERE name = 'DIL BECHARA'), 'Romantic', '00:05:11', 'https://firebasestorage.googleapis.com/v0/b/moseeqify.appspot.com/o/Dekh%20Lena%20-%20Arijit%20Singh%20Song%20%20Slowed%20And%20Reverb%20Lofi%20Mix.mp3?alt=media&token=07e5ad32-bdec-441f-8142-f50a6ef23295S')

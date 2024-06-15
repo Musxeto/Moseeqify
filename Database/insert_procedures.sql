@@ -63,6 +63,7 @@ BEGIN
     INSERT INTO AlbumSongs (albumID, songID)
     VALUES (@albumID, @songID);
 END;
+
 CREATE PROCEDURE InsertPlaylist
     @name VARCHAR(100),
     @username VARCHAR(50)
@@ -71,6 +72,7 @@ BEGIN
     INSERT INTO Playlist (name, creationdate, username)
     VALUES (@name, CURRENT_TIMESTAMP, @username);
 END;
+
 CREATE PROCEDURE InsertPlaylistSong
     @playlistID INT,
     @songID INT

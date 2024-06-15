@@ -93,4 +93,48 @@ DISABLE TRIGGER CheckUserAge ON [User];
 
 select * from [user]
 select * from playlist
-insert into playlist (name, username) values ('I hate farhan sarwar','AmmadNew')
+select * from artist
+select * from Album
+select * from AlbumSongs
+
+
+SELECT genreName, COUNT(*) AS total_songs
+FROM Song
+GROUP BY genreName;
+
+
+SELECT a.name AS album_name, COUNT(*) AS total_songs
+FROM Song s
+JOIN Album a ON s.albumID = a.albumID
+GROUP BY a.name,s.albumID;
+
+
+SELECT ar.name AS artist_name, COUNT(*) AS total_albums
+FROM Album al
+JOIN Artist ar ON al.artistID = ar.artistID
+GROUP BY ar.name;
+
+
+SELECT p.name AS name, COUNT(*) AS total_songs
+FROM Playlist p
+JOIN PlaylistSongs ps ON p.playlistID = ps.playlistID
+GROUP BY p.name;
+
+
+SELECT p.username, COUNT(*) AS total_playlists
+FROM Playlist p
+GROUP BY p.username;
+
+
+
+SELECT genreName, COUNT(*) AS total_songs
+FROM Song
+GROUP BY genreName
+ORDER BY total_songs DESC;
+
+
+SELECT g.genreName, COUNT(DISTINCT ar.artistID) AS total_artists
+FROM Genre g
+JOIN Song s ON g.genreName = s.genreName
+JOIN Artist ar ON s.artistID = ar.artistID
+GROUP BY g.genreName;
