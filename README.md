@@ -62,7 +62,8 @@ The database uses relational tables to store and manage music data, user informa
 - Playlist Table
 - UserListeningHistory Table
 - user_follows_artists Table
-![Uploading erd.png…]()
+![erd](https://github.com/Musxeto/Moseeqify/assets/138971833/c683e37d-b149-4c31-b74d-db692304dbaf)
+
 
 **Constraints and Data Integrity:**
 - Primary Key Constraints
