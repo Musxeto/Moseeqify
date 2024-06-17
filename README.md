@@ -2,6 +2,8 @@
 
 Moseeqify is a music streaming application developed to showcase the principles of database design and management using a three-tier architecture. The project involves the development of a relational database in Microsoft SQL Server, a backend API using Flask, and a React.js frontend to provide a comprehensive full-stack solution with CRUD operations.
 
+This project is created for the 4th semester Database Systems course at Lahore Garrison University.
+
 # Complete Documentation: 
 [Moseeqify docs.docx.pdf](https://github.com/user-attachments/files/15872102/Moseeqify.docs.docx.pdf)
 
@@ -17,7 +19,7 @@ Moseeqify is a music streaming application developed to showcase the principles 
 - [Setup and Installation](#setup-and-installation)
 - [Usage](#usage)
 - [Contributors](#contributors)
-- [References](#references)
+
 
 ## Introduction
 Moseeqify allows users to access a library of songs, create personalized playlists, and enjoy an amazing user interface. The focus is on the database and backend development to ensure a scalable foundation for the application.
@@ -155,9 +157,5 @@ The frontend, built with React JS, includes various components such as:
 - Faizan Ali Fa-2022/BSCS/187
 - Ahsan Ilahi Fa-2022/BSCS/210
 
-## References
-- [Flask Documentation](https://flask.palletsprojects.com/)
-- [React Documentation](https://reactjs.org/)
-- [SQLAlchemy Documentation](https://www.sqlalchemy.org/)
-- [Microsoft SQL Server Documentation](https://docs.microsoft.com/en-us/sql/sql-server/)
-- [GitHub](https://github.com/)
+## Note:
+This is a 4th semester Project developed for the Database Systems Course.
