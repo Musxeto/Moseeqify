@@ -5,8 +5,8 @@ Moseeqify is a music streaming application developed to showcase the principles 
 
 This project is created for the 4th semester Database Systems course at Lahore Garrison University.
 
-# Complete Documentation: 
-[Moseeqify docs.docx.pdf](https://github.com/user-attachments/files/15872102/Moseeqify.docs.docx.pdf)
+# Complete Documentation: [Moseeqify docs.docx.pdf](https://github.com/user-attachments/files/15872102/Moseeqify.docs.docx.pdf)
+
 
 
 ## Table of Contents
