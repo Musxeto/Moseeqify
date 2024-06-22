@@ -1,4 +1,5 @@
 # Moseeqify: Music Streaming Service
+![image](https://github.com/Musxeto/Moseeqify/assets/138971833/5a151ade-475b-4ddf-9104-4f448c452688)
 
 Moseeqify is a music streaming application developed to showcase the principles of database design and management using a three-tier architecture. The project involves the development of a relational database in Microsoft SQL Server, a backend API using Flask, and a React.js frontend to provide a comprehensive full-stack solution with CRUD operations.
 
